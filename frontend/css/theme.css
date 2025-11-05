@@ -1,0 +1,78 @@
+/* ============================
+   THEME VARIABLES (Light & Dark)
+   ============================ */
+:root {
+  --bg-color: #fafaff;
+  --text-color: #1a1a1a;
+  --card-color: #f4f4f4;
+  --primary-color: #007bff;
+  --input-bg: #fafaff;
+  --input-border: #cccccc;
+  --input-text: #1a1a1a;
+  --hover-color: #0056b3;
+  --divider-text: #555555;
+  --divider-line: #cccccc;
+}
+
+:root.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-color: #1e1e1e;
+  --primary-color: #3399ff;
+  --input-bg: #1e1e1e;
+  --input-border: #333333;
+  --input-text: #e0e0e0;
+  --hover-color: #66b2ff;
+  --divider-text: #bbbbbb;
+  --divider-line: #444444;
+}
+
+/* ============================
+   THEME TOGGLE SWITCH
+   ============================ */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--card-color);
+  border-radius: 20px;
+  transition: 0.4s;
+  border: 1px solid var(--divider-line);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+  background-color: #fff;
+}

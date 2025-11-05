@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #fafaff;
+  --text-color: #1a1a1a;
+  --card-color: #f4f4f4;
+  --primary-color: #007bff;
+  --hover-color: #0056b3;
+  --divider-line: #cccccc;
+  --delete-color: #ff4d4d;
+  --delete-hover: #ff1a1a;
+}
+
+.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-color: #1e1e1e;
+  --primary-color: #3399ff;
+  --hover-color: #66b2ff;
+  --divider-line: #444444;
+  --delete-color: #ff4d4d;
+  --delete-hover: #ff1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+nav {
+  width: 100%;
+  height: 60px;
+  background: rgba(0,0,0,0.1);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  align-items: center;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 60px 20px;
+}
+
+.settings-container {
+  background: var(--card-color);
+  padding: 2.5rem;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.settings-container h2 {
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.settings-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-color);
+  padding: 14px 16px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid var(--divider-line);
+  transition: all 0.3s;
+  color: var(--text-color);
+}
+
+.settings-option:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.settings-option span {
+  font-weight: 500;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--divider-line);
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--bg-color);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.delete-option {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.3s;
+}
+
+#delete-btn {
+  color: var(--delete-hover);
+  border-color: var(--delete-color);
+}
+
+.delete-option:hover {
+  background: var(--hover-color);
+  color: #fff;
+  border-color: var(--hover-color);
+}
+
+#delete-btn:hover {
+  color: var(--card-color);
+  background: var(--delete-color);
+}
+
+#password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#password-form label {
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+#password-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--divider-line);
+  outline: none;
+  font-size: 14px;
+  transition: all 0.3s;
+  background-color: var(--card-color);
+  color: var(--text-color);
+}
+
+#password-form input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+#password-form button {
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#password-form button:hover {
+  background-color: var(--hover-color);
+}
+
+#password-message {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--primary-color);
+  min-height: 18px;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  nav {
+    padding: 0 20px;
+  }
+
+  nav ul li a {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .settings-container {
+    max-width: 90%;
+    padding: 2rem;
+  }
+}

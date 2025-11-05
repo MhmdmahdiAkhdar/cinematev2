@@ -1,0 +1,221 @@
+:root {
+  --bg-color: #fafaff;
+  --text-color: #1a1a1a;
+  --card-color: #f4f4f4;
+  --primary-color: #007bff;
+  --input-bg: #fafaff;
+  --input-border: #cccccc;
+  --input-text: #1a1a1a;
+  --hover-color: #0056b3;
+  --divider-text: #555555;
+  --divider-line: #cccccc;
+}
+
+:root.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-color: #1e1e1e;
+  --primary-color: #3399ff;
+  --input-bg: #1e1e1e;
+  --input-border: #333333;
+  --input-text: #e0e0e0;
+  --hover-color: #66b2ff;
+  --divider-text: #bbbbbb;
+  --divider-line: #444444;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.5s ease;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.auth-container {
+  background: var(--card-color);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
+  text-align: center;
+  width: 320px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.auth-container:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transform: scale(1.02);
+}
+
+.logo-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+#logo-light {
+  display: none;
+}
+
+:root.dark-theme #logo-dark {
+  display: block;
+}
+
+:root.dark-theme #logo-light {
+  display: none;
+}
+
+:root:not(.dark-theme) #logo-light {
+  display: block;
+}
+
+:root:not(.dark-theme) #logo-dark {
+  display: none;
+}
+
+#logo-dark, #logo-light {
+  width: 60px;
+  height: 60px;
+}
+
+
+.logo-title h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background: var(--input-bg);
+  color: var(--input-text);
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-container input:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 6px rgba(0, 86, 179, 0.3);
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.auth-container button:hover {
+  background-color: var(--hover-color);
+  transform: translateY(-2px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--divider-text);
+  font-size: 0.9rem;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--divider-line);
+  margin: 0 0.8rem;
+}
+
+.auth-container .login-btn {
+  background: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  transition: all 0.4s ease;
+}
+
+.login-btn:hover {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: 1px solid var(--primary-color);
+}
+
+.name-fields {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.name-fields input {
+  flex: 1;
+}
+
+
+.theme-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.theme-btn ion-icon {
+  font-size: 24px;
+  color: var(--text-color);
+  transition: opacity 0.3s ease, color 0.3s ease;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#light-icon {
+  opacity: 0;
+}
+
+@media (max-width: 600px) {
+  body {
+    background: var(--bg-color);
+  }
+
+  .auth-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .logo-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-container input,
+  .auth-container button,
+  .login-btn {
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
+
+  .name-fields {
+    flex-direction: column;
+  }
+}
