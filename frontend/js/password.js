@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const data = {
-      email: form.email.value,
+      // email: form.email.value,
       currentPassword: form.currentPassword.value,
       newPassword: form.newPassword.value,
     };
@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch("/api/auth/change-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials:"include",
       });
 
       const result = await res.json();

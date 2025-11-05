@@ -6,9 +6,12 @@ import bodyParser from "body-parser";
 import db from "./db.js";
 import fetch from "node-fetch";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
+const JWT_SECRET = process.env.JWT_SECRET;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 
@@ -17,6 +20,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../frontend")));
 app.set("views", path.join(__dirname, "../frontend/ejs"));
 app.set("view engine", "ejs");
@@ -24,6 +28,21 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const verifyJWT = (req,res,next)=>{
+  const token = req.cookies.token;
+  if(!token){
+    return res.redirect("/login");
+  }
+
+  try{
+    const decoded = jwt.verify(token,JWT_SECRET);
+    req.user =decoded;
+    next();
+  }catch(err){
+    return res.redirect("/login");
+  }
+};
 
 app.get("/", (req, res) => res.redirect("/signup"));
 
@@ -65,10 +84,6 @@ app.get("/login", (req,res)=>{
 app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ success: false, message: "Email and password are required" });
-  }
-
   const sql = "SELECT id, email, password FROM users WHERE email = ?";
   db.query(sql, [email], async (err, results) => {
     if (err) return res.status(500).json({ success: false, message: "DB error" });
@@ -77,17 +92,24 @@ app.post("/api/auth/login", (req, res) => {
     const user = results[0];
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) return res.status(401).json({ success: false, message: "Invalid email or password" });
+    const token = jwt.sign({id:user.id,email:user.email}, JWT_SECRET,{expiresIn:"2h"});
+    res.cookie("token",token,{
+      httpOnly: true,
+      secure:false,
+      sameSite:"lax",
+      maxAge:2*60*60*1000,
+    });
     res.json({ success: true, message: "Login successful", user: { id: user.id, email: user.email } });
   });
 });
 
 
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard",verifyJWT, (req, res) => {
   res.render("dashboard");
 });
 
-app.get("/api/media", (req, res) => {
+app.get("/api/media",verifyJWT, (req, res) => {
   const sql = "SELECT * FROM media ORDER BY release_date DESC";
   db.query(sql, (err, results) => {
     if (err) {
@@ -98,7 +120,7 @@ app.get("/api/media", (req, res) => {
   });
 });
 
-app.get("/api/media/search", async (req, res) => {
+app.get("/api/media/search",verifyJWT, async (req, res) => {
   try {
     const query = req.query.q?.trim();
     if (!query) return res.json({ success: false, movies: [] });
@@ -166,7 +188,7 @@ app.get("/api/media/search", async (req, res) => {
 
 
 
-app.get("/api/media/sync", async (req, res) => {
+app.get("/api/media/sync",verifyJWT, async (req, res) => {
   try {
     const endpoints = [
       { path: "/movie/popular", type: "MOVIE" },
@@ -246,18 +268,19 @@ app.get("/api/media/sync", async (req, res) => {
   }
 });
 
-app.get("/settings", (req, res) => {
+app.get("/settings", verifyJWT, (req,res) => {
   res.render("settings");
 });
 
-app.get("/settings/password", (req, res) => {
+app.get("/settings/password",verifyJWT, (req, res) => {
   res.render("password");
 });
 
 
 //this dose not work
-app.post("/api/auth/change-password", async (req, res) => {
-  const { email, currentPassword, newPassword } = req.body;
+app.post("/api/auth/change-password",verifyJWT, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const email= req.user.email;
 
   if (currentPassword === newPassword) {
     return res.status(400).json({ success: false, message: "Passwords should not match" });
@@ -279,6 +302,12 @@ app.post("/api/auth/change-password", async (req, res) => {
     });
   });
 });
+
+app.post("/api/auth/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ success: true, message: "Logged out successfully" });
+});
+
 
 
 
