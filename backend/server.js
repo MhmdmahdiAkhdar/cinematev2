@@ -8,6 +8,7 @@ import fetch from "node-fetch";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import multer from "multer";
 
 dotenv.config();
 
@@ -24,6 +25,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../frontend")));
 app.set("views", path.join(__dirname, "../frontend/ejs"));
 app.set("view engine", "ejs");
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../frontend/uploads")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -53,7 +56,6 @@ app.get("/signup", (req, res) => {
 app.post("/api/auth/signup", async(req, res) => {
   const defaultAvatar = "/assets/avatar.png";
   const { firstName, lastName, email, password, theme } = req.body;
-  
   const checkUsersql="SELECT id FROM users WHERE email = ?";
   const sql ="INSERT INTO users (first_name, last_name, email, password, theme, avatar) VALUES (?, ?, ?, ?, ?, ?)";
   const criptedPassword = bcrypt.hashSync(password);
@@ -69,10 +71,9 @@ app.post("/api/auth/signup", async(req, res) => {
         if (err) {
           return res.status(400).json({ success: false, message: "Error saving user" });
         }
-        console.log("✅ User inserted:", result.insertId);
+        console.log("✅ User inserted");
         return res.json({ success: true,message: "User registered successfully"});
       });
-
     }
   });
 });
@@ -276,8 +277,6 @@ app.get("/settings/password",verifyJWT, (req, res) => {
   res.render("password");
 });
 
-
-//this dose not work
 app.post("/api/auth/change-password",verifyJWT, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const email= req.user.email;
@@ -324,6 +323,56 @@ app.delete("/api/auth/delete",verifyJWT,(req,res)=>{
         res.json({ success: true, message: "Account deleted successfully" });
     });
 });
+
+const upload = multer({ dest: path.join(__dirname, "../frontend/uploads/") });
+
+
+app.get("/settings/profile", verifyJWT, (req,res) => {
+  const userId = req.user.id;
+
+  const sql = "SELECT id, first_name, last_name, email, avatar FROM users WHERE id = ?";
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error("DB error:", err);
+      return res.status(500).send("Server error");
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send("User not found");
+    }
+
+    const user = results[0];
+    res.render("profile", { user });
+  });
+});
+
+app.put("/api/auth/profile/pfp", verifyJWT, upload.single("avatar"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: "No file uploaded" });
+  }
+
+  const userId = req.user.id;
+  const filePath = `/uploads/${req.file.filename}`;
+
+  const sql = "UPDATE users SET avatar = ? WHERE id = ?";
+
+  db.query(sql, [filePath, userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ success: false, error: err.message });
+    } else {
+      res.json({
+        success: true,
+        message: "Profile picture updated successfully",
+        avatar: filePath,
+      });
+    }
+  });
+});
+
+app.use("/uploads", express.static("uploads"));
+
+
 
 
 

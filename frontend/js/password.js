@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const data = {
-      // email: form.email.value,
       currentPassword: form.currentPassword.value,
       newPassword: form.newPassword.value,
     };
