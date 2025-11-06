@@ -308,6 +308,23 @@ app.post("/api/auth/logout", (req, res) => {
   res.json({ success: true, message: "Logged out successfully" });
 });
 
+app.delete("/api/auth/delete",verifyJWT,(req,res)=>{
+    const userId= req.user.id;
+    const sql="Delete FROM users WHERE id=?";
+
+    db.query(sql,[userId],(err,result)=>{
+        if(err){
+            console.error("could not delete account");
+            return res.status(500).json({ success: false, message: "Server error" });
+        }
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: "User not found" });
+        }
+        res.clearCookie("token");
+        res.json({ success: true, message: "Account deleted successfully" });
+    });
+});
+
 
 
 
