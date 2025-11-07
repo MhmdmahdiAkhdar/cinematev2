@@ -2,24 +2,21 @@ const moviesContainer = document.getElementById("movies-container");
 
 async function fetchMedia() {
   moviesContainer.innerHTML = "<p>Loading...</p>";
-
   try {
     const res = await fetch("/api/media");
     const data = await res.json();
-
     moviesContainer.innerHTML = "";
-
     if (!data.success || data.movies.length === 0) {
       moviesContainer.innerHTML = "<p>No media found.</p>";
       return;
     }
-
     data.movies.forEach(item => {
       const card = document.createElement("div");
       card.classList.add("movie-card");
-
+      card.addEventListener("click", () => {
+        window.location.href = `/series/${item.id}`;
+      });
       const typeLabel = item.type === "MOVIE" ? "Movie" : "TV Show";
-
       card.innerHTML = `
         <img src="${item.poster_url || 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${item.title}">
         <div class="overlay">
@@ -29,7 +26,6 @@ async function fetchMedia() {
       `;
       moviesContainer.appendChild(card);
     });
-
   } catch (err) {
     console.error(err);
     moviesContainer.innerHTML = "<p>Failed to load media.</p>";
@@ -38,24 +34,21 @@ async function fetchMedia() {
 
 async function searchMedia(query) {
   moviesContainer.innerHTML = "<p>Searching...</p>";
-
   try {
     const res = await fetch(`/api/media/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
-
     moviesContainer.innerHTML = "";
-
     if (!data.success || data.movies.length === 0) {
       moviesContainer.innerHTML = "<p>No results found.</p>";
       return;
     }
-
     data.movies.forEach(item => {
       const card = document.createElement("div");
       card.classList.add("movie-card");
-
+      card.addEventListener("click", () => {
+        window.location.href = `/pages/series-details.ejs?id=${item.id}`;
+      });
       const typeLabel = item.type === "MOVIE" ? "Movie" : "TV Show";
-
       card.innerHTML = `
         <img src="${item.poster_url || 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${item.title}">
         <div class="overlay">
@@ -65,7 +58,6 @@ async function searchMedia(query) {
       `;
       moviesContainer.appendChild(card);
     });
-
   } catch (err) {
     console.error(err);
     moviesContainer.innerHTML = "<p>Error loading search results.</p>";
