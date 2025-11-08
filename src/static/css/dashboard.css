@@ -148,6 +148,10 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 20px;
 }
+/* in case grid empty, single p will exist, allow it to override grid style */
+.movie-grid > p {
+  position: absolute;
+}
 
 .movie-card {
   background: var(--card-color);

@@ -15,6 +15,13 @@
 						<ion-icon name="trash-outline"></ion-icon>
 					</button>
 				<% } %>
+				<% if (typeof card_type !== 'undefined' && card_type === 'watching') { %>
+					<div class="progress-bar">
+						<div class="progress" style="width: <%= movie.progress_percent || 0 %>%">
+							<span><%= movie.progress_percent || 0 %>%</span>
+						</div>
+					</div>
+				<% } %>
 			</div>
 		</div>
 	<% }) %>

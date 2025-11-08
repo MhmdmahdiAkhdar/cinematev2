@@ -39,10 +39,10 @@ userMediaRouter.delete('/watchlist/:mediaId', verifyJWT, async (req, res) => {
 userMediaRouter.get('/finished', verifyJWT, async (req, res) => {
     const userId = req.user.id;
     const sql = `
-        SELECT * FROM media
+        SELECT media.*, progress.progress_percent FROM media
         JOIN progress ON media.id = progress.media_id
         WHERE progress.user_id = ?
-        AND progress.progress = 100
+        AND progress.progress_percent = 100
         ORDER BY progress.updated_at DESC
     `
     pool.query(sql, [userId], (err, results) => {
@@ -53,5 +53,28 @@ userMediaRouter.get('/finished', verifyJWT, async (req, res) => {
         res.render("finished", { movies: results });
     });
 })
+
+
+userMediaRouter.get('/watching', verifyJWT, async (req, res) => {
+    const userId = req.user.id;
+    const sql = `
+        SELECT
+            media.*,
+            progress.progress_percent
+        FROM media
+        JOIN progress ON media.id = progress.media_id
+        WHERE progress.user_id = ?
+        AND progress.progress_percent < 100
+        ORDER BY progress.updated_at DESC
+    `
+    pool.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error("DB error:", err);
+            return res.status(500).send("Server error");
+        }
+        res.render("watching", { movies: results });
+    });
+})
+
 
 export default userMediaRouter;

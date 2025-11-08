@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Cinemate | Watchlist</title>
+	<title>Cinemate | Watching</title>
 	
 	<link rel="stylesheet" href="/css/dashboard.css" />
 	<link rel="stylesheet" href="/css/theme.css" />
@@ -11,16 +11,31 @@
 	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 	<style>
-		.remove-button {
-			background-color: #d02e2e;
-			color: #fff;
-			border: none;
-			padding: 5px 10px;
-			cursor: pointer;
+		.movie-card .overlay {
+			padding-bottom: 30px;
+		}
+		.progress-bar {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 20px;
+			background-color: #3a3737;
+			border-radius: 25px;
+		}
+		.progress-bar .progress {
+			height: 100%;
+			background-color: #26a4d2;
 			border-radius: 5px;
 		}
-		.remove-button ion-icon {
-			font-size: 18px;
+		.progress-bar .progress span {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: #fff;
+			font-size: 0.8rem;
+			font-weight: 500;
 		}
 	</style>
 </head>
@@ -37,9 +52,9 @@
 		
 		<ul>
 			<li><a href="/dashboard"><ion-icon name="home-outline"></ion-icon> Home</a></li>
-			<li><a href="/user_media/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
+			<li><a href="/user_media/watching" class="active"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
 			<li><a href="/user_media/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
-			<li><a href="/watchlist" class="active"><ion-icon name="bookmark-outline"></ion-icon> Watchlist</a></li>
+			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> Watchlist</a></li>
 		</ul>
 		
 		<div class="nav-actions">
@@ -50,37 +65,18 @@
 	</nav>
 	
 	<main>
-		<section id="watchlist-section" class="movie-section">
-			<h2>Your Watchlist</h2>
+		<section id="watching-section" class="movie-section">
+			<h2>Currently Watching</h2>
 			<div class="movie-grid" id="movies-container">
 				<% if (movies && movies.length > 0) { %>
-					<%- include("movie-grid", { movies: movies, card_type: "watchlist" }) %>
+					<%- include("movie-grid", { movies: movies, card_type: "watching" }) %>
 				<% } else { %>
-					<p>No movies in your watchlist yet.</p>
+					<p>Seems you are not watching anything these days :(</p>
 				<% } %>
 			</div>
 		</section>
 	</main>
 
 	<script src="/js/theme.js"></script>
-	<script>
-		function removeFromWatchlist(mediaId) {
-			fetch(`/user_media/watchlist/${mediaId}`, {
-				method: "DELETE",
-			})
-			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
-					console.log("✅ Successfully removed from watchlist");
-					location.reload();
-				} else {
-					console.error("❌ Error removing from watchlist:", data.error);
-				}
-			})
-			.catch(error => {
-				console.error("❌ Error removing from watchlist:", error);
-			});
-		}
-	</script>
 </body>
 </html>
