@@ -1,0 +1,157 @@
+/* =============================
+   DASHBOARD STATS
+============================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.stat-card {
+  background: var(--card-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+  gap: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px var(--shadow-color);
+}
+
+.stat-icon {
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 2rem;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon.users { background: #3b82f6; }      /* blue */
+.stat-icon.watching { background: #f59e0b; }   /* amber */
+.stat-icon.finished { background: #10b981; }   /* green */
+.stat-icon.planned { background: #8b5cf6; }    /* violet */
+
+.stat-info h2 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.stat-info p {
+  font-size: 0.95rem;
+  color: var(--text-muted, #aaa);
+}
+
+
+/* =============================
+   ADMIN ACTIONS CONTAINER
+============================= */
+.admin-actions {
+  background: var(--card-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  padding: 25px 30px;
+  margin-top: 40px;
+  max-width: 500px;
+}
+
+.admin-actions h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+#make-admin-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#make-admin-form input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+#make-admin-form input:focus {
+  border-color: var(--primary-color);
+}
+
+#make-admin-form button {
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#make-admin-form button:hover {
+  background: var(--hover-color);
+}
+
+.status-msg {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.status-msg.success {
+  color: #10b981; /* green */
+}
+
+.status-msg.error {
+  color: #ef4444; /* red */
+}
+
+
+/* =============================
+   MEDIA SYNC SECTION
+============================= */
+.sync-section {
+  background: var(--card-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  padding: 25px 30px;
+  margin-top: 30px;
+  max-width: 500px;
+}
+
+.sync-section h2 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+#sync-btn {
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#sync-btn:hover {
+  background: var(--hover-color);
+}

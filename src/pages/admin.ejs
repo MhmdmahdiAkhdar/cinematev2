@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cinemate | Admin</title>
+	
+	<link rel="stylesheet" href="/css/dashboard.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link rel="stylesheet" href="/css/admin.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+	<nav>
+		<div class="logo">🎬 Cinemate</div>
+		
+		<div class="search-bar">
+			<input type="text" id="search-input" placeholder="Search movies or TV shows..." />
+			<button id="search-btn" title="Search">
+				<ion-icon name="search-outline"></ion-icon>
+			</button>
+		</div>
+		
+		<ul>
+			<li><a href="/dashboard" class="active"><ion-icon name="home-outline"></ion-icon> Home</a></li>
+			<li><a href="/user_media/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
+			<li><a href="/user_media/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
+			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> Planned</a></li>
+		</ul>
+		
+		<div class="nav-actions">
+			<a href="/settings" title="Settings">
+				<ion-icon name="settings-outline"></ion-icon>
+			</a>
+		</div>
+	</nav>
+	
+	<main>
+		<h1>Admin Dashboard</h1>
+
+		<div class="stats-grid">
+			<div class="stat-card">
+				<div class="stat-icon users">
+					<ion-icon name="people-outline"></ion-icon>
+				</div>
+				<div class="stat-info">
+					<h2><%= numUsers %></h2>
+					<p>Total Users</p>
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-icon watching">
+					<ion-icon name="play-outline"></ion-icon>
+				</div>
+				<div class="stat-info">
+					<h2><%= numWatching %></h2>
+					<p>Currently Watching</p>
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-icon finished">
+					<ion-icon name="checkmark-done-outline"></ion-icon>
+				</div>
+				<div class="stat-info">
+					<h2><%= numFinished %></h2>
+					<p>Finished</p>
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-icon planned">
+					<ion-icon name="bookmark-outline"></ion-icon>
+				</div>
+				<div class="stat-info">
+					<h2><%= numPlanned %></h2>
+					<p>Planned</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="admin-actions">
+			<h2>Add an Admin</h2>
+			<form id="make-admin-form">
+				<input type="email" id="userEmail-input" placeholder="Enter user email..." required />
+				<button type="submit">Make Admin</button>
+			</form>
+			<p id="admin-msg" class="status-msg"></p>
+		</div>
+
+		<div class="sync-section">
+			<h2>Retrieve More Data</h2>
+			<button id="sync-btn">Retrieve Data</button>
+			<p id="sync-msg" class="status-msg"></p>
+		</div>
+	</main>
+	
+	<script src="/js/theme.js"></script>
+	<script src="/js/admin.js"></script>
+</body>
+</html>

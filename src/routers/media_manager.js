@@ -124,7 +124,8 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 		var existingMediaIds = {};
 		
 		for (const { path, type } of endpoints) {
-			const response = await fetch(`${TMDB_BASE_URL}${path}?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
+			const page = Math.floor(Math.random() * 500) + 1;
+			const response = await fetch(`${TMDB_BASE_URL}${path}?api_key=${TMDB_API_KEY}&language=en-US&page=${page}`);
 			const data = await response.json();
 			
 			if (data && Array.isArray(data.results)) {
@@ -148,7 +149,6 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 		if (allMedia.length === 0) {
 			return res.status(400).json({ success: false, message: "No media fetched from TMDB" });
 		}
-		console.log('First 10 media:', allMedia.slice(0, 10));
 		
 		let insertedCount = 0;
 		

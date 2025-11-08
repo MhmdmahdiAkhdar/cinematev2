@@ -37,6 +37,11 @@ export async function createDatabase() {
         const schema = fs.readFileSync(schemaPath, 'utf-8');
         await connection.query(schema);
         console.log("Tables created successfully.");
+        // Read and execute the schema SQL file
+        schemaPath = path.resolve('db/create_triggers.sql');
+        schema = fs.readFileSync(schemaPath, 'utf-8');
+        await connection.query(schema);
+        console.log("Triggers created successfully.");
     } else {
         console.log(`Database "${process.env.DB_NAME}" already exists. Skipping creation.`);
     }
