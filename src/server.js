@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { createDatabase } from "./db/db_setup.js";
 import seriesRouter from "./routers/series.js";
 import settingsRouter from "./routers/settings.js";
+import userMediaRouter from "./routers/user_media.js";
 import { authRouter, verifyJWT } from "./routers/auth.js";
 import mediaManagerRouter from "./routers/media_manager.js";
 import swaggerUi from "swagger-ui-express";
@@ -51,6 +52,7 @@ app.use("/api/auth", authRouter);
 app.use("/series", seriesRouter);
 app.use("/settings", settingsRouter);
 app.use("/api/media", mediaManagerRouter);
+app.use("/user_media", userMediaRouter);
 
 
 app.use(

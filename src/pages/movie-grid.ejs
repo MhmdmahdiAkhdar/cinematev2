@@ -1,13 +1,20 @@
 <% if (movies && movies.length > 0) { %>
 	<% movies.forEach(movie => { %>
-		<div class="movie-card" onclick="window.location.href='/series/<%= movie.id %>'">
-			<img src="<%= movie.poster_url || 'https://via.placeholder.com/500x750?text=No+Image' %>" alt="<%= movie.title %>">
+		<div class="movie-card">
+			<img onclick="window.location.href='/series/<%= movie.id %>'" src="<%= movie.poster_url || 'https://via.placeholder.com/500x750?text=No+Image' %>" alt="<%= movie.title %>">
 			<div class="overlay">
-				<h4><%= movie.title %></h4>
-				<p>
-					<%= movie.type === 'MOVIE' ? 'Movie' : 'TV Show' %> |
-					<%= movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A' %>
-				</p>
+				<div class="info">
+					<h4><%= movie.title %></h4>
+					<p>
+						<%= movie.type === 'MOVIE' ? 'Movie' : 'TV Show' %> |
+						<%= movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A' %>
+					</p>
+				</div>
+				<% if (typeof card_type !== 'undefined' && card_type === 'watchlist') { %>
+					<button class="remove-button" onclick="removeFromWatchlist('<%= movie.id %>')" title="Remove from Watchlist">
+						<ion-icon name="trash-outline"></ion-icon>
+					</button>
+				<% } %>
 			</div>
 		</div>
 	<% }) %>

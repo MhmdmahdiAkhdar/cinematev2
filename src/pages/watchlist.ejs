@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cinemate | Watchlist</title>
+	
+	<link rel="stylesheet" href="/css/dashboard.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+	<style>
+		.remove-button {
+			background-color: #d02e2e;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+		.remove-button ion-icon {
+			font-size: 18px;
+		}
+	</style>
+</head>
+<body>
+	<nav>
+		<div class="logo">🎬 Cinemate</div>
+		
+		<div class="search-bar">
+			<input type="text" id="search-input" placeholder="Search movies or TV shows..." />
+			<button id="search-btn" title="Search">
+				<ion-icon name="search-outline"></ion-icon>
+			</button>
+		</div>
+		
+		<ul>
+			<li><a href="/dashboard"><ion-icon name="home-outline"></ion-icon> Home</a></li>
+			<li><a href="/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
+			<li><a href="/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
+			<li><a href="/watchlist" class="active"><ion-icon name="bookmark-outline"></ion-icon> Watchlist</a></li>
+		</ul>
+		
+		<div class="nav-actions">
+			<a href="/settings" title="Settings">
+				<ion-icon name="settings-outline"></ion-icon>
+			</a>
+		</div>
+	</nav>
+	
+	<main>
+		<section id="watchlist-section" class="movie-section">
+			<h2>Your Watchlist</h2>
+			<div class="movie-grid" id="movies-container">
+				<% if (movies && movies.length > 0) { %>
+					<%- include("movie-grid", { movies: movies, card_type: "watchlist" }) %>
+				<% } else { %>
+					<p>No movies in your watchlist yet.</p>
+				<% } %>
+			</div>
+		</section>
+	</main>
+
+	<script src="/js/theme.js"></script>
+	<script>
+		function removeFromWatchlist(mediaId) {
+			fetch(`/user_media/watchlist/${mediaId}`, {
+				method: "DELETE",
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					console.log("✅ Successfully removed from watchlist");
+					location.reload();
+				} else {
+					console.error("❌ Error removing from watchlist:", data.error);
+				}
+			})
+			.catch(error => {
+				console.error("❌ Error removing from watchlist:", error);
+			});
+		}
+	</script>
+</body>
+</html>

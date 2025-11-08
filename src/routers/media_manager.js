@@ -57,8 +57,8 @@ mediaManagerRouter.get("/search", verifyJWT, async (req, res) => {
 					
 					// insert data into DB (async to avoid blocking)
 					const insertSQL = `
-						INSERT INTO media (title, type, description, release_date, poster_url)
-						VALUES (?, ?, ?, ?, ?)
+						INSERT INTO media (id, title, type, description, release_date, poster_url)
+						VALUES (?, ?, ?, ?, ?, ?)
 						ON DUPLICATE KEY UPDATE
 						description = VALUES(description),
 						release_date = VALUES(release_date),
@@ -67,6 +67,7 @@ mediaManagerRouter.get("/search", verifyJWT, async (req, res) => {
 					
 					for (const m of tmdbData.results) {
 						const data = [
+							m.id,
 							m.title,
 							"MOVIE",
 							m.overview || "",
@@ -120,6 +121,7 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 		];
 		
 		let allMedia = [];
+		var existingMediaIds = {};
 		
 		for (const { path, type } of endpoints) {
 			const response = await fetch(`${TMDB_BASE_URL}${path}?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
@@ -130,7 +132,14 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 					...item,
 					media_type: type
 				}));
-				allMedia = allMedia.concat(formatted);
+				for (const item of formatted) {
+					const key = `${item.id}-${item.media_type}`;
+					if (existingMediaIds[key]) {
+						continue;
+					}
+					existingMediaIds[key] = true;
+					allMedia.push(item);
+				}
 			} else {
 				console.warn(`⚠️ Skipped ${path} — invalid TMDB response:`, data);
 			}
@@ -139,6 +148,7 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 		if (allMedia.length === 0) {
 			return res.status(400).json({ success: false, message: "No media fetched from TMDB" });
 		}
+		console.log('First 10 media:', allMedia.slice(0, 10));
 		
 		let insertedCount = 0;
 		
@@ -153,8 +163,8 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 			const releaseDate = media.release_date || media.first_air_date || null;
 			
 			const insertSQL = `
-				INSERT INTO media (title, type, description, release_date, poster_url)
-				VALUES (?, ?, ?, ?, ?)
+				INSERT INTO media (id, title, type, description, release_date, poster_url)
+				VALUES (?, ?, ?, ?, ?, ?)
 				ON DUPLICATE KEY UPDATE
 					description = VALUES(description),
 					release_date = VALUES(release_date),
@@ -164,7 +174,7 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 			await new Promise(async (resolve) => {
 				pool.query(
 					insertSQL,
-					[title, media.media_type, media.overview || "", releaseDate, posterUrl],
+					[media.id, title, media.media_type, media.overview || "", releaseDate, posterUrl],
 					(err) => {
 						if (err) {
 							console.error("❌ DB insert error:", err);
