@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cinemate | Change Profile Picture</title>
+	
+	<link rel="stylesheet" href="/css/change-avatar.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+	<nav>
+		<div class="logo">🎬 Cinemate</div>
+		<ul>
+			<li><a href="/dashboard"><ion-icon name="home-outline"></ion-icon> Home</a></li>
+			<li><a href="/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
+			<li><a href="/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
+			<li><a href="/wishlist"><ion-icon name="bookmark-outline"></ion-icon> Planned</a></li>
+			<li><a href="/settings" class="active"><ion-icon name="settings-outline"></ion-icon> Settings</a></li>
+		</ul>
+	</nav>
+	<main class="main-container">
+		<div class="card">
+			<h2>Change Profile Picture</h2>
+			
+			<div class="preview">
+				<img id="avatarPreview" src="<%= user.avatar || '/images/default.png' %>" alt="Avatar">
+			</div>
+			
+			<form id="avatarForm" enctype="multipart/form-data">
+				<label for="avatarInput" class="upload-btn">📁 Choose Image</label>
+				<input type="file" name="avatar" id="avatarInput" accept="image/*" required>
+				<button type="submit" class="btn-upload">Upload Picture</button>
+			</form>
+			
+			<p id="msg"></p>
+		</div>
+	</main>
+	
+	<script src="/js/theme.js"></script>
+	<script>
+		const avatarInput = document.getElementById("avatarInput");
+		const avatarPreview = document.getElementById("avatarPreview");
+		const avatarForm = document.getElementById("avatarForm");
+		const msg = document.getElementById("msg");
+		
+		avatarInput.addEventListener("change", () => {
+			const file = avatarInput.files[0];
+			if (file) {
+				avatarPreview.src = URL.createObjectURL(file);
+			}
+		});
+		
+		avatarForm.addEventListener("submit", async (e) => {
+			e.preventDefault();
+			const formData = new FormData();
+			formData.append("avatar", avatarInput.files[0]);
+			
+			const res = await fetch("/api/auth/profile/pfp", {
+				method: "PUT",
+				body: formData,
+				credentials: "include",
+			});
+			
+			const data = await res.json();
+			if (data.success) {
+				msg.textContent = "✅ Profile picture updated!";
+				msg.style.color = "green";
+			} else {
+				msg.textContent = "❌ Error updating picture";
+				msg.style.color = "red";
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cinemate | Dashboard</title>
+	
+	<link rel="stylesheet" href="/css/dashboard.css" />
+	<link rel="stylesheet" href="/css/theme.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+	<nav>
+		<div class="logo">🎬 Cinemate</div>
+		
+		<div class="search-bar">
+			<input type="text" id="search-input" placeholder="Search movies or TV shows..." />
+			<button id="search-btn" title="Search">
+				<ion-icon name="search-outline"></ion-icon>
+			</button>
+		</div>
+		
+		<ul>
+			<li><a href="/dashboard" class="active"><ion-icon name="home-outline"></ion-icon> Home</a></li>
+			<li><a href="/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
+			<li><a href="/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
+			<li><a href="/wishlist"><ion-icon name="bookmark-outline"></ion-icon> Planned</a></li>
+		</ul>
+		
+		<div class="nav-actions">
+			<a href="/settings" title="Settings">
+				<ion-icon name="settings-outline"></ion-icon>
+			</a>
+		</div>
+	</nav>
+	
+	<main>
+		<section id="media-section" class="movie-section">
+			<h2>All Media</h2>
+			<div class="movie-grid" id="movies-container">
+				<p>Loading...</p>
+			</div>
+		</section>
+	</main>
+	
+	<script type="module" src="/js/dashboard.js"></script>
+	<script src="/js/theme.js"></script>
+</body>
+</html>
