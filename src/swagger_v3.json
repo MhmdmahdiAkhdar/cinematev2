@@ -1,0 +1,166 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "cinematev2",
+    "version": "1.0.0",
+    "description": "Specification JSONs: [v2](/api-spec/v2), [v3](/api-spec/v3)."
+  },
+  "paths": {
+    "/signup": {
+      "get": {
+        "summary": "/signup",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/login": {
+      "get": {
+        "summary": "/login",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "summary": "/dashboard",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/home": {
+      "get": {
+        "summary": "/home",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "/",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "summary": "/api/auth/signup",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "/api/auth/login",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/auth/change-password": {
+      "post": {
+        "summary": "/api/auth/change-password",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "/api/auth/logout",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/auth/delete": {
+      "delete": {
+        "summary": "/api/auth/delete",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/auth/profile/pfp": {
+      "put": {
+        "summary": "/api/auth/profile/pfp",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/series/{id}": {
+      "get": {
+        "summary": "/series/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Clerks Details</title>\r\n\t<link rel=\"stylesheet\" href=\"/css/series-details.css\" />\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">\r\n\t\t\t<ion-icon name=\"film-outline\"></ion-icon>\r\n\t\t\t<span>Cinemate</span>\r\n\t\t</div>\r\n\t\t\r\n\t\t<div class=\"search-bar\">\r\n\t\t\t<input type=\"text\" placeholder=\"Search series...\" />\r\n\t\t\t<button><ion-icon name=\"search-outline\"></ion-icon></button>\r\n\t\t</div>\r\n\t\t\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/home\">Home</a></li>\r\n\t\t\t<li><a href=\"/popular\">Popular</a></li>\r\n\t\t\t<li><a href=\"/settings\">Settings</a></li>\r\n\t\t</ul>\r\n\t\t\r\n\t\t<div class=\"nav-actions\">\r\n\t\t\t<a href=\"/settings/profile\"><ion-icon name=\"person-circle-outline\"></ion-icon></a>\r\n\t\t</div>\r\n\t</nav>\r\n\t\r\n\t<section class=\"hero\" style=\"background-image: url('https://image.tmdb.org/t/p/original/7M0huD4pLqe15c3VSxBMCqzFMSW.jpg');\">\r\n\t\t<div class=\"overlay\"></div>\r\n\t\t<div class=\"hero-content\">\r\n\t\t\t<h1>Clerks</h1>\r\n\t\t\t<p class=\"tagline\"></p>\r\n\t\t\t<div class=\"hero-buttons\">\r\n\t\t\t\t<button class=\"btn-primary\">Add to Watchlist</button>\r\n\t\t\t\t<button class=\"btn-secondary\" id=\"sharebtn\">Share</button>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</section>\r\n\t\r\n\t<main>\r\n\t\t<section class=\"overview\">\r\n\t\t\t<div class=\"poster\">\r\n\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w500/xunXvzFlkf1GGgMkCySA9CCFumB.jpg\" alt=\"Clerks Poster\">\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<h2>Overview</h2>\r\n\t\t\t\t<p>The continuing adventures of store clerks Dante and Randal, who try to make the best of their menial labor, with no help from Jay and Silent Bob.</p>\r\n\t\t\t\t\r\n\t\t\t\t<div class=\"meta\">\r\n\t\t\t\t\t<p><strong>Genres:</strong> Animation, Comedy</p>\r\n\t\t\t\t\t<p><strong>First Air Date:</strong> 2000-05-31</p>\r\n\t\t\t\t\t<p><strong>Seasons:</strong> 2</p>\r\n\t\t\t\t\t<p><strong>Episodes:</strong> 6</p>\r\n\t\t\t\t\t<p><strong>Rating:</strong> ⭐ 7.1/10</p>\r\n\t\t\t\t\t<p><strong>Status:</strong> Canceled</p>\r\n\t\t\t\t\t<p><strong>Language:</strong> EN</p>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t\t\r\n\t\t<section class=\"seasons\">\r\n\t\t\t<div class=\"rating-container\">\r\n\t\t\t<div class=\"stars\" id=\"starRating\">\r\n\t\t\t\t<span data-value=\"1\">★</span>\r\n\t\t\t\t<span data-value=\"2\">★</span>\r\n\t\t\t\t<span data-value=\"3\">★</span>\r\n\t\t\t\t<span data-value=\"4\">★</span>\r\n\t\t\t\t<span data-value=\"5\">★</span>\r\n\t\t\t\t<span data-value=\"6\">★</span>\r\n\t\t\t\t<span data-value=\"7\">★</span>\r\n\t\t\t\t<span data-value=\"8\">★</span>\r\n\t\t\t\t<span data-value=\"9\">★</span>\r\n\t\t\t\t<span data-value=\"10\">★</span>\r\n\t\t\t</div>\r\n\t\t\t<p id=\"ratingValue\">Your rating: 0 / 10</p>\r\n\t\t\t</div>\r\n\t\t\t<h2>Seasons</h2>\r\n\t\t\t<div class=\"season-grid\">\r\n\t\t\t\r\n\t\t\t\t<div class=\"season-card\">\r\n\t\t\t\t\t<img src=\"\" alt=\"Specials\">\r\n\t\t\t\t\t<div class=\"season-info\">\r\n\t\t\t\t\t\t<h3>Specials</h3>\r\n\t\t\t\t\t\t<p>7 Episodes</p>\r\n\t\t\t\t\t\t<p></p>\r\n\t\t\t\t\t\t<a href=\"/series/2/season/\" class=\"btn-view\">View Episodes</a>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t<div class=\"season-card\">\r\n\t\t\t\t\t<img src=\"\" alt=\"Season 1\">\r\n\t\t\t\t\t<div class=\"season-info\">\r\n\t\t\t\t\t\t<h3>Season 1</h3>\r\n\t\t\t\t\t\t<p>6 Episodes</p>\r\n\t\t\t\t\t\t<p>2000-05-31</p>\r\n\t\t\t\t\t\t<a href=\"/series/2/season/\" class=\"btn-view\">View Episodes</a>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t\t\t\r\n\t\t<section class=\"cast\">\r\n\t\t\t<h2>Cast</h2>\r\n\t\t\t<div class=\"cast-grid\">\r\n\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/c8bhTxVxhN4DMrJeCnu5usutbY5.jpg\" alt=\"Brian O&#39;Halloran\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Brian O&#39;Halloran</p>\r\n\t\t\t\t\t\t<small>Dante Hicks (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/edwQlYwAWWHQC9um89c5CQpFYof.jpg\" alt=\"Jeff Anderson\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Jeff Anderson</p>\r\n\t\t\t\t\t\t<small>Randal Graves (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/jVL4WC8NbJFL894Z2FBYY3XuHW5.jpg\" alt=\"Jason Mewes\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Jason Mewes</p>\r\n\t\t\t\t\t\t<small>Jay (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/uxDQ0NTZMnOuAaPa0tQzMFV9dx4.jpg\" alt=\"Kevin Smith\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Kevin Smith</p>\r\n\t\t\t\t\t\t<small>Silent Bob (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/hzKy7x574eeUS3wt1R3yvWBRpeR.jpg\" alt=\"Alec Baldwin\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Alec Baldwin</p>\r\n\t\t\t\t\t\t<small>Leonardo Leonardo (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/xXt9Nh7RAT5bOen66TaXreNYmCl.jpg\" alt=\"Kevin Michael Richardson\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Kevin Michael Richardson</p>\r\n\t\t\t\t\t\t<small>Narrator / Morpheus (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"cast-card\">\r\n\t\t\t\t\t\t<img src=\"https://image.tmdb.org/t/p/w185/Ok7Fed0BRFFxMRKzNzROGAmRKp.jpg\" alt=\"Charles Barkley\">\r\n\t\t\t\t\t\t<p class=\"actor-name\">Charles Barkley</p>\r\n\t\t\t\t\t\t<small>Charles Barkley (voice)</small>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t</section>\r\n\t</main>\r\n\r\n\t<script src=\"/js/theme.js\"></script>\r\n\t<script>\r\n\t\tconst sharebtn = document.getElementById('sharebtn');\r\n  \t\tsharebtn.addEventListener('click', () => {\r\n    \tconst pageUrl = window.location.href;\r\n    \tnavigator.clipboard.writeText(pageUrl)\r\n      \t\t.then(() => {\r\n        \t\talert(\"Page URL copied to clipboard!\");\r\n      \t\t})\r\n      \t\t.catch(err => {\r\n        \t\tconsole.error(\"Failed to copy URL: \", err);\r\n      \t\t});\r\n  \t\t});\r\n\r\n\t\tconst stars = document.querySelectorAll('#starRating span');\r\n\t\tconst ratingValue = document.getElementById('ratingValue');\r\n\t\tlet selectedRating = 0;\r\n\r\n\t\tstars.forEach(star => {\r\n\t\t\tstar.addEventListener('click', () => {\r\n\t\t\tselectedRating = parseInt(star.getAttribute('data-value'));\r\n\t\t\tupdateStars(selectedRating);\r\n\t\t\t});\r\n\r\n\t\t\tstar.addEventListener('mouseover', () => {\r\n\t\t\tconst hoverValue = parseInt(star.getAttribute('data-value'));\r\n\t\t\tupdateStars(hoverValue);\r\n\t\t\t});\r\n\r\n\t\t\tstar.addEventListener('mouseout', () => {\r\n\t\t\tupdateStars(selectedRating);\r\n\t\t\t});\r\n\t\t});\r\n\r\n\t\tfunction updateStars(value) {\r\n\t\t\tstars.forEach(s => {\r\n\t\t\ts.classList.toggle('active', parseInt(s.getAttribute('data-value')) <= value);\r\n\t\t\t});\r\n\t\t\tratingValue.textContent = `Your rating: ${value} / 10`;\r\n\t\t}\r\n\r\n\t</script>\r\n</body>\r\n</html>\r\n\t\t\t\t"
+                }
+              }
+            }
+          }
+        },
+        "tags": []
+      }
+    },
+    "/settings": {
+      "get": {
+        "summary": "/settings",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/settings/password": {
+      "get": {
+        "summary": "/settings/password",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/settings/profile": {
+      "get": {
+        "summary": "/settings/profile",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/media": {
+      "get": {
+        "summary": "/api/media",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/media/search": {
+      "get": {
+        "summary": "/api/media/search",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/media/sync": {
+      "get": {
+        "summary": "/api/media/sync",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api-docs/json": {
+      "get": {
+        "summary": "/api-docs/json",
+        "responses": {},
+        "tags": []
+      }
+    }
+  },
+  "tags": []
+}

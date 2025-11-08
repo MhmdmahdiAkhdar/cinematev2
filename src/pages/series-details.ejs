@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><%= series.name %> - Details</title>
+	<title><%= series.name %> Details</title>
 	<link rel="stylesheet" href="/css/series-details.css" />
 	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -27,7 +27,6 @@
 		</ul>
 		
 		<div class="nav-actions">
-			<ion-icon name="moon-outline" id="themeToggle"></ion-icon>
 			<a href="/settings/profile"><ion-icon name="person-circle-outline"></ion-icon></a>
 		</div>
 	</nav>
@@ -39,7 +38,7 @@
 			<p class="tagline"><%= series.tagline %></p>
 			<div class="hero-buttons">
 				<button class="btn-primary">Add to Watchlist</button>
-				<button class="btn-secondary">Share</button>
+				<button class="btn-secondary" id="sharebtn">Share</button>
 			</div>
 		</div>
 	</section>
@@ -67,6 +66,21 @@
 		</section>
 		
 		<section class="seasons">
+			<div class="rating-container">
+			<div class="stars" id="starRating">
+				<span data-value="1">★</span>
+				<span data-value="2">★</span>
+				<span data-value="3">★</span>
+				<span data-value="4">★</span>
+				<span data-value="5">★</span>
+				<span data-value="6">★</span>
+				<span data-value="7">★</span>
+				<span data-value="8">★</span>
+				<span data-value="9">★</span>
+				<span data-value="10">★</span>
+			</div>
+			<p id="ratingValue">Your rating: 0 / 10</p>
+			</div>
 			<h2>Seasons</h2>
 			<div class="season-grid">
 			<% series.seasons.forEach(season => { %>
@@ -84,7 +98,6 @@
 		</section>
 			
 		<section class="cast">
-			<h2>Cast</h2>
 			<h2>Cast</h2>
 			<div class="cast-grid">
 			<% if (series.cast && series.cast.length > 0) { %>
@@ -105,15 +118,45 @@
 
 	<script src="/js/theme.js"></script>
 	<script>
-		const themeToggle = document.getElementById('themeToggle');
-		themeToggle.addEventListener('click', () => {
-			document.body.classList.toggle('dark-theme');
-			if (document.body.classList.contains('dark-theme')) {
-				localStorage.setItem('theme', 'dark');
-			} else {
-				localStorage.setItem('theme', 'light');
-			}
+		const sharebtn = document.getElementById('sharebtn');
+  		sharebtn.addEventListener('click', () => {
+    	const pageUrl = window.location.href;
+    	navigator.clipboard.writeText(pageUrl)
+      		.then(() => {
+        		alert("Page URL copied to clipboard!");
+      		})
+      		.catch(err => {
+        		console.error("Failed to copy URL: ", err);
+      		});
+  		});
+
+		const stars = document.querySelectorAll('#starRating span');
+		const ratingValue = document.getElementById('ratingValue');
+		let selectedRating = 0;
+
+		stars.forEach(star => {
+			star.addEventListener('click', () => {
+			selectedRating = parseInt(star.getAttribute('data-value'));
+			updateStars(selectedRating);
+			});
+
+			star.addEventListener('mouseover', () => {
+			const hoverValue = parseInt(star.getAttribute('data-value'));
+			updateStars(hoverValue);
+			});
+
+			star.addEventListener('mouseout', () => {
+			updateStars(selectedRating);
+			});
 		});
+
+		function updateStars(value) {
+			stars.forEach(s => {
+			s.classList.toggle('active', parseInt(s.getAttribute('data-value')) <= value);
+			});
+			ratingValue.textContent = `Your rating: ${value} / 10`;
+		}
+
 	</script>
 </body>
 </html>
