@@ -24,69 +24,84 @@ mediaManagerRouter.get("/", verifyJWT, async (req, res) => {
 });
 
 
-mediaManagerRouter.get("/search",verifyJWT, async (req, res) => {
+mediaManagerRouter.get("/search", verifyJWT, async (req, res) => {
 	try {
 		const query = req.query.q?.trim();
-		if (!query) return res.json({ success: false, movies: [] });
+		let sql = "SELECT * FROM media ORDER BY release_date DESC";
+		let params = [];
 		
-		const dbSql = "SELECT * FROM media WHERE title LIKE ? ORDER BY release_date DESC";
-		pool.query(dbSql, [`%${query}%`], async (err, results) => {
+		if (query) {
+			sql = "SELECT * FROM media WHERE title LIKE ? ORDER BY release_date DESC";
+			params = [`%${query}%`];
+		}
+		
+		pool.query(sql, params, async (err, results) => {
 			if (err) {
-				console.error("❌ DB search error:", err);
-				return res.status(500).json({ success: false, message: "Server error" });
+				console.error("❌ Error fetching movies:", err);
+				return res.render("movie-grid", { movies: [] });
 			}
 			
-			if (results.length > 0) {
-				return res.json({ success: true, movies: results });
-			}
-			
-			try {
-				const tmdbRes = await fetch(`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`);
-				const tmdbData = await tmdbRes.json();
-				
-				if (!tmdbData.results || tmdbData.results.length === 0) {
-					return res.json({ success: true, movies: [] });
-				}
-				
-				const moviesToInsert = tmdbData.results.map(movie => [
-					movie.title,
-					'MOVIE',
-					movie.overview || "",
-					movie.release_date || null,
-					movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null
-				]);
-				
-				const insertSQL = `
-					INSERT INTO media (title, type, description, release_date, poster_url)
-					VALUES (?, ?, ?, ?, ?)
-					ON DUPLICATE KEY UPDATE
+			// if local DB empty then fallback to tmdb
+			if ((!results || results.length === 0) && query) {
+				try {
+					const tmdbRes = await fetch(
+						`${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(
+							query
+						)}`
+					);
+					const tmdbData = await tmdbRes.json();
+					
+					if (!tmdbData.results?.length) {
+						return res.render("movie-grid", { movies: [] });
+					}
+					
+					// insert data into DB (async to avoid blocking)
+					const insertSQL = `
+						INSERT INTO media (title, type, description, release_date, poster_url)
+						VALUES (?, ?, ?, ?, ?)
+						ON DUPLICATE KEY UPDATE
 						description = VALUES(description),
 						release_date = VALUES(release_date),
 						poster_url = VALUES(poster_url)
-				`;
-				
-				for (const movie of moviesToInsert) {
-					pool.query(insertSQL, movie, err => {
-						if (err) console.error("❌ DB insert error:", err);
-					});
+					`;
+					
+					for (const m of tmdbData.results) {
+						const data = [
+							m.title,
+							"MOVIE",
+							m.overview || "",
+							m.release_date || null,
+							m.poster_path
+							? `https://image.tmdb.org/t/p/w500${m.poster_path}`
+							: null,
+						];
+						pool.query(insertSQL, data, (err) => {
+							if (err) console.error("❌ Insert error:", err);
+						});
+					}
+					
+					const formatted = tmdbData.results.map((m) => ({
+						title: m.title,
+						type: "MOVIE",
+						description: m.overview,
+						release_date: m.release_date,
+						poster_url: m.poster_path
+						? `https://image.tmdb.org/t/p/w500${m.poster_path}`
+						: null,
+					}));
+					
+					return res.render("movie-grid", { movies: formatted });
+				} catch (apiErr) {
+					console.error("❌ TMDB API error:", apiErr);
+					return res.render("movie-grid", { movies: [] });
 				}
-				
-				return res.json({ success: true, movies: tmdbData.results.map(m => ({
-					title: m.title,
-					description: m.overview,
-					release_date: m.release_date,
-					poster_url: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null
-				})) });
-				
-			} catch (tmdbErr) {
-				console.error("❌ TMDB search error:", tmdbErr);
-				return res.status(500).json({ success: false, message: "TMDB search error" });
 			}
+			
+			res.render("movie-grid", { movies: results });
 		});
-		
 	} catch (err) {
-		console.error("❌ Search error:", err);
-		res.status(500).json({ success: false, message: "Server error" });
+		console.error("❌ Render error:", err);
+		res.render("movie-grid", { movies: [] });
 	}
 });
 

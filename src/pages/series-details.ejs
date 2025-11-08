@@ -69,46 +69,52 @@
 		<section class="seasons">
 			<h2>Seasons</h2>
 			<div class="season-grid">
-				<% series.seasons.forEach(season => { %>
-					<div class="season-card">
-						<img src="<%= season.poster %>" alt="<%= season.name %>">
-						<div class="season-info">
-							<h3><%= season.name %></h3>
-							<p><%= season.episode_count %> Episodes</p>
-							<p><%= season.air_date %></p>
-							<a href="/series/<%= series.id %>/season/<%= season.number %>" class="btn-view">View Episodes</a>
-						</div>
+			<% series.seasons.forEach(season => { %>
+				<div class="season-card">
+					<img src="<%= season.poster %>" alt="<%= season.name %>">
+					<div class="season-info">
+						<h3><%= season.name %></h3>
+						<p><%= season.episode_count %> Episodes</p>
+						<p><%= season.air_date %></p>
+						<a href="/series/<%= series.id %>/season/<%= season.number %>" class="btn-view">View Episodes</a>
+					</div>
+				</div>
+				<% }) %>
+			</div>
+		</section>
+			
+		<section class="cast">
+			<h2>Cast</h2>
+			<h2>Cast</h2>
+			<div class="cast-grid">
+			<% if (series.cast && series.cast.length > 0) { %>
+				<% series.cast.forEach(actor => { %>
+					<div class="cast-card">
+						<img src="https://image.tmdb.org/t/p/w185<%= actor.profile_path %>" alt="<%= actor.name %>">
+						<p class="actor-name"><%= actor.name %></p>
+						<small><%= actor.character %></small>
 					</div>
 					<% }) %>
-				</div>
-			</section>
+					<% } else { %>
+						<p>No cast information available.</p>
+						<% } %>
+			</div>
 			
-			<section class="cast">
-				<h2>Cast</h2>
-				<h2>Cast</h2>
-				<div class="cast-grid">
-					<% if (series.cast && series.cast.length > 0) { %>
-						<% series.cast.forEach(actor => { %>
-							<div class="cast-card">
-								<img src="https://image.tmdb.org/t/p/w185<%= actor.profile_path %>" alt="<%= actor.name %>">
-								<p class="actor-name"><%= actor.name %></p>
-								<small><%= actor.character %></small>
-							</div>
-							<% }) %>
-							<% } else { %>
-								<p>No cast information available.</p>
-								<% } %>
-							</div>
-							
-						</section>
-					</main>
-					
-					<script>
-						const themeToggle = document.getElementById('themeToggle');
-						themeToggle.addEventListener('click', () => {
-							document.body.classList.toggle('dark-theme');
-						});
-					</script>
-				</body>
-				</html>
+		</section>
+	</main>
+
+	<script src="/js/theme.js"></script>
+	<script>
+		const themeToggle = document.getElementById('themeToggle');
+		themeToggle.addEventListener('click', () => {
+			document.body.classList.toggle('dark-theme');
+			if (document.body.classList.contains('dark-theme')) {
+				localStorage.setItem('theme', 'dark');
+			} else {
+				localStorage.setItem('theme', 'light');
+			}
+		});
+	</script>
+</body>
+</html>
 				
