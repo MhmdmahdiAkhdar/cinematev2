@@ -135,3 +135,93 @@ if (addCommentBtn) {
 }
 
 loadComments();
+
+const watchlistBtn = document.querySelector(".btn-primary");
+const favoriteBtn = document.querySelector(".btn-favorite");
+const watchedBtn = document.querySelector(".btn-watched");
+function updateBtn(btn, isActive, textActive, textInactive) {
+  if (!btn) return;
+  if (isActive) {
+    btn.textContent = textActive;
+    btn.style.backgroundColor = "#4caf50";
+    btn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.4)";
+  } else {
+    btn.textContent = textInactive;
+    btn.style.backgroundColor = "";
+    btn.style.boxShadow = "";
+  }
+}
+
+// === WATCHLIST ===
+async function checkWatchlist() {
+  try {
+    const res = await fetch(`/series/${mediaId}/watchlist/check`);
+    if (res.ok) {
+      const data = await res.json();
+      updateBtn(watchlistBtn, data.inWatchlist, "✔ In Watchlist", "Add to Watchlist");
+    }
+  } catch (err) { console.error(err); }
+}
+
+if (watchlistBtn) {
+  watchlistBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`/series/${mediaId}/watchlist/toggle`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        updateBtn(watchlistBtn, data.inWatchlist, "✔ In Watchlist", "Add to Watchlist");
+      }
+    } catch (err) { console.error(err); }
+  });
+}
+
+// === FAVORITES ===
+async function checkFavorites() {
+  try {
+    const res = await fetch(`/series/${mediaId}/favorites/check`);
+    if (res.ok) {
+      const data = await res.json();
+      updateBtn(favoriteBtn, data.inFavorites, "❤ Favorited", "❤ Add to Favorites");
+    }
+  } catch (err) { console.error(err); }
+}
+
+if (favoriteBtn) {
+  favoriteBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`/series/${mediaId}/favorites/toggle`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        updateBtn(favoriteBtn, data.inFavorites, "❤ Favorited", "❤ Add to Favorites");
+      }
+    } catch (err) { console.error(err); }
+  });
+}
+
+// === WATCHED ===
+async function checkWatched() {
+  try {
+    const res = await fetch(`/series/${mediaId}/watched/check`);
+    if (res.ok) {
+      const data = await res.json();
+      updateBtn(watchedBtn, data.isWatched, "✓ Watched", "✓ Mark as Watched");
+    }
+  } catch (err) { console.error(err); }
+}
+
+if (watchedBtn) {
+  watchedBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`/series/${mediaId}/watched/toggle`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        updateBtn(watchedBtn, data.isWatched, "✓ Watched", "✓ Mark as Watched");
+      }
+    } catch (err) { console.error(err); }
+  });
+}
+
+
+checkWatchlist();
+checkFavorites();
+checkWatched();

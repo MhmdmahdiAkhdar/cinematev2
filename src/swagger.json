@@ -206,24 +206,8 @@
             "required": true
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Rating saved successfully"
-                }
-              }
-            }
-          }
-        },
-        "tags": [],
-        "produces": [
-          "application/json"
-        ]
+        "responses": {},
+        "tags": []
       }
     },
     "/series/{id}/rating": {
@@ -240,19 +224,188 @@
           }
         ],
         "responses": {
+          "304": {}
+        },
+        "tags": []
+      }
+    },
+    "/series/{id}/watchlist/check": {
+      "get": {
+        "summary": "/series/{id}/watchlist/check",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "304": {}
+        },
+        "tags": []
+      }
+    },
+    "/series/{id}/watchlist/toggle": {
+      "post": {
+        "summary": "/series/{id}/watchlist/toggle",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK",
             "schema": {
               "type": "object",
               "properties": {
-                "rating": {
-                  "type": "number",
-                  "example": 4
+                "inWatchlist": {
+                  "type": "boolean",
+                  "example": false
                 }
               }
             }
-          },
-          "304": {}
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/series/{id}/favorites/check": {
+      "get": {
+        "summary": "/series/{id}/favorites/check",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "inFavorites": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/series/{id}/favorites/toggle": {
+      "post": {
+        "summary": "/series/{id}/favorites/toggle",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "inFavorites": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/series/{id}/watched/check": {
+      "get": {
+        "summary": "/series/{id}/watched/check",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isWatched": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/series/{id}/watched/toggle": {
+      "post": {
+        "summary": "/series/{id}/watched/toggle",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isWatched": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
         },
         "tags": [],
         "produces": [
@@ -267,7 +420,9 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "304": {}
+        },
         "tags": []
       }
     },
@@ -335,8 +490,20 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | Watchlist</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/dashboard.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n\t<style>\r\n\t\t.remove-button {\r\n\t\t\tbackground-color: #d02e2e;\r\n\t\t\tcolor: #fff;\r\n\t\t\tborder: none;\r\n\t\t\tpadding: 5px 10px;\r\n\t\t\tcursor: pointer;\r\n\t\t\tborder-radius: 5px;\r\n\t\t}\r\n\t\t.remove-button ion-icon {\r\n\t\t\tfont-size: 18px;\r\n\t\t}\r\n\t</style>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t\r\n\t\t<div class=\"search-bar\">\r\n\t\t\t<input type=\"text\" id=\"search-input\" placeholder=\"Search movies or TV shows...\" />\r\n\t\t\t<button id=\"search-btn\" title=\"Search\">\r\n\t\t\t\t<ion-icon name=\"search-outline\"></ion-icon>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t\t\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media/finished\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/watchlist\" class=\"active\"><ion-icon name=\"bookmark-outline\"></ion-icon> Watchlist</a></li>\r\n\t\t</ul>\r\n\t\t\r\n\t\t<div class=\"nav-actions\">\r\n\t\t\t<a href=\"/settings\" title=\"Settings\">\r\n\t\t\t\t<ion-icon name=\"settings-outline\"></ion-icon>\r\n\t\t\t</a>\r\n\t\t</div>\r\n\t</nav>\r\n\t\r\n\t<main>\r\n\t\t<section id=\"watchlist-section\" class=\"movie-section\">\r\n\t\t\t<h2>Your Watchlist</h2>\r\n\t\t\t<div class=\"movie-grid\" id=\"movies-container\">\r\n\t\t\t\t\r\n\t\t\t\t\t\r\n\t\r\n\t\t<div class=\"movie-card\">\r\n\t\t\t<img onclick=\"window.location.href='/series/1084242'\" src=\"https://image.tmdb.org/t/p/w500/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg\" alt=\"Zootopia 2\">\r\n\t\t\t<div class=\"overlay\">\r\n\t\t\t\t<div class=\"info\">\r\n\t\t\t\t\t<h4>Zootopia 2</h4>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t\tMovie |\r\n\t\t\t\t\t\t2025\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t\t<button class=\"remove-button\" onclick=\"removeFromWatchlist('1084242')\" title=\"Remove from Watchlist\">\r\n\t\t\t\t\t\t<ion-icon name=\"trash-outline\"></ion-icon>\r\n\t\t\t\t\t</button>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\r\n\r\n\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t</main>\r\n\r\n\t<script src=\"/js/theme.js\"></script>\r\n\t<script>\r\n\t\tfunction removeFromWatchlist(mediaId) {\r\n\t\t\tfetch(`/user_media/watchlist/${mediaId}`, {\r\n\t\t\t\tmethod: \"DELETE\",\r\n\t\t\t})\r\n\t\t\t.then(response => response.json())\r\n\t\t\t.then(data => {\r\n\t\t\t\tif (data.success) {\r\n\t\t\t\t\tconsole.log(\"✅ Successfully removed from watchlist\");\r\n\t\t\t\t\tlocation.reload();\r\n\t\t\t\t} else {\r\n\t\t\t\t\tconsole.error(\"❌ Error removing from watchlist:\", data.error);\r\n\t\t\t\t}\r\n\t\t\t})\r\n\t\t\t.catch(error => {\r\n\t\t\t\tconsole.error(\"❌ Error removing from watchlist:\", error);\r\n\t\t\t});\r\n\t\t}\r\n\t</script>\r\n</body>\r\n</html>"
+            }
+          },
+          "304": {}
+        },
+        "tags": [],
+        "produces": [
+          "text/html"
+        ]
       }
     },
     "/user_media/watchlist/{mediaId}": {
@@ -363,8 +530,20 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | FinishedList</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/dashboard.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t\r\n\t\t<div class=\"search-bar\">\r\n\t\t\t<input type=\"text\" id=\"search-input\" placeholder=\"Search movies or TV shows...\" />\r\n\t\t\t<button id=\"search-btn\" title=\"Search\">\r\n\t\t\t\t<ion-icon name=\"search-outline\"></ion-icon>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t\t\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media_finished\" class=\"active\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/user_media/watchlist\"><ion-icon name=\"bookmark-outline\"></ion-icon> FinishedList</a></li>\r\n\t\t</ul>\r\n\t\t\r\n\t\t<div class=\"nav-actions\">\r\n\t\t\t<a href=\"/settings\" title=\"Settings\">\r\n\t\t\t\t<ion-icon name=\"settings-outline\"></ion-icon>\r\n\t\t\t</a>\r\n\t\t</div>\r\n\t</nav>\r\n\t\r\n\t<main>\r\n\t\t<section id=\"finished-list-section\" class=\"movie-section\">\r\n\t\t\t<h2>Your FinishedList</h2>\r\n\t\t\t<div class=\"movie-grid\" id=\"movies-container\">\r\n\t\t\t\t\r\n\t\t\t\t\t\r\n\t\r\n\t\t<div class=\"movie-card\">\r\n\t\t\t<img onclick=\"window.location.href='/series/1084242'\" src=\"https://image.tmdb.org/t/p/w500/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg\" alt=\"Zootopia 2\">\r\n\t\t\t<div class=\"overlay\">\r\n\t\t\t\t<div class=\"info\">\r\n\t\t\t\t\t<h4>Zootopia 2</h4>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t\tMovie |\r\n\t\t\t\t\t\t2025\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\r\n\r\n\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t</main>\r\n\r\n\t<script src=\"/js/theme.js\"></script>\r\n</body>\r\n</html>"
+            }
+          },
+          "304": {}
+        },
+        "tags": [],
+        "produces": [
+          "text/html"
+        ]
       }
     },
     "/user_media/watching": {
@@ -374,7 +553,9 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "304": {}
+        },
         "tags": []
       }
     },

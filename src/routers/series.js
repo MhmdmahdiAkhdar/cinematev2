@@ -187,7 +187,6 @@ seriesRouter.post("/:id/rate", verifyJWT, (req, res) => {
   });
 });
 
-// Get the current user's rating for a media
 seriesRouter.get("/:id/rating", verifyJWT, (req, res) => {
   const mediaId = req.params.id;
   const userId = req.user.id;
@@ -206,6 +205,107 @@ seriesRouter.get("/:id/rating", verifyJWT, (req, res) => {
     }
   });
 });
+
+seriesRouter.get("/:id/watchlist/check", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const sql = "SELECT * FROM watchlist WHERE user_id = ? AND media_id = ?";
+  pool.query(sql, [userId, mediaId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+    res.json({ inWatchlist: results.length > 0 });
+  });
+});
+seriesRouter.post("/:id/watchlist/toggle", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const checkSql = "SELECT * FROM watchlist WHERE user_id = ? AND media_id = ?";
+  pool.query(checkSql, [userId, mediaId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+
+    if (results.length > 0) {
+      pool.query("DELETE FROM watchlist WHERE user_id = ? AND media_id = ?", [userId, mediaId], (err2) => {
+        if (err2) return res.status(500).json({ message: "DB error" });
+        res.json({ inWatchlist: false });
+      });
+    } else {
+      pool.query("INSERT INTO watchlist (user_id, media_id) VALUES (?, ?)", [userId, mediaId], (err2) => {
+        if (err2) return res.status(500).json({ message: "DB error" });
+        res.json({ inWatchlist: true });
+      });
+    }
+  });
+});
+
+
+seriesRouter.get("/:id/favorites/check", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const sql = "SELECT * FROM favorites WHERE user_id = ? AND media_id = ?";
+  pool.query(sql, [userId, mediaId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+    res.json({ inFavorites: results.length > 0 });
+  });
+});
+
+seriesRouter.post("/:id/favorites/toggle", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const checkSql = "SELECT * FROM favorites WHERE user_id = ? AND media_id = ?";
+  pool.query(checkSql, [userId, mediaId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+
+    if (results.length > 0) {
+
+      pool.query("DELETE FROM favorites WHERE user_id = ? AND media_id = ?", [userId, mediaId], (err2) => {
+        if (err2) return res.status(500).json({ message: "DB error" });
+        res.json({ inFavorites: false });
+      });
+    } else {
+      pool.query("INSERT INTO favorites (user_id, media_id) VALUES (?, ?)", [userId, mediaId], (err2) => {
+        if (err2) return res.status(500).json({ message: "DB error" });
+        res.json({ inFavorites: true });
+      });
+    }
+  });
+});
+
+seriesRouter.get("/:id/watched/check", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const sql = "SELECT * FROM progress WHERE user_id = ? AND media_id = ? AND progress_percent = 100";
+  pool.query(sql, [userId, mediaId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+    res.json({ isWatched: results.length > 0 });
+  });
+});
+
+seriesRouter.post("/:id/watched/toggle", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const checkSql = "SELECT * FROM progress WHERE user_id = ? AND media_id = ? AND progress_percent = 100";
+  pool.query(checkSql, [userId, mediaId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+
+    if (results.length > 0) {
+      pool.query("UPDATE progress SET progress_percent = 0 WHERE user_id = ? AND media_id = ?", [userId, mediaId], (err2) => {
+        if (err2) return res.status(500).json({ message: "DB error" });
+        res.json({ isWatched: false });
+      });
+    } else {
+      pool.query("INSERT INTO progress (user_id, media_id, progress_percent) VALUES (?, ?, 100) ON DUPLICATE KEY UPDATE progress_percent=100", [userId, mediaId], (err2) => {
+        if (err2) return res.status(500).json({ message: "DB error" });
+        res.json({ isWatched: true });
+      });
+    }
+  });
+});
+
 
 
 
