@@ -109,11 +109,9 @@ seriesRouter.get("/:id", verifyJWT, async (req, res) => {
   }
 });
 
-// Get all comments for a media item
 seriesRouter.get("/:id/comments", (req, res) => {
   const { id } = req.params;
 
-  // Adjust to match your actual users table column (e.g., "name")
   const sql = `
     SELECT 
       c.id, 
@@ -136,7 +134,6 @@ seriesRouter.get("/:id/comments", (req, res) => {
   });
 });
 
-// Add a new comment
 seriesRouter.post("/:id/comments", verifyJWT, (req, res) => {
   const { id } = req.params;
   const { comment_text } = req.body;
@@ -153,15 +150,60 @@ seriesRouter.post("/:id/comments", verifyJWT, (req, res) => {
       return res.status(500).json({ message: "Error adding comment" });
     }
 
-    // Return the inserted comment
+
     const insertedComment = {
       id: results.insertId,
       comment_text,
       created_at: new Date(),
       user_id: userId,
-      username: req.user.name // make sure JWT has "name"
+      username: req.user.name 
     };
     res.status(201).json(insertedComment);
+  });
+});
+
+
+seriesRouter.post("/:id/rate", verifyJWT, (req, res) => {
+  const { id: mediaId } = req.params;
+  const { rating, review_text = "" } = req.body;
+  const userId = req.user.id;
+
+  if (!rating || rating < 1 || rating > 5) {
+    return res.status(400).json({ message: "Rating must be between 1 and 5" });
+  }
+
+  const sql = `
+    INSERT INTO reviews (user_id, media_id, rating, review_text)
+    VALUES (?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE rating = VALUES(rating), review_text = VALUES(review_text)
+  `;
+
+  pool.query(sql, [userId, mediaId, rating, review_text], (err, results) => {
+    if (err) {
+      console.error("Error saving review:", err);
+      return res.status(500).json({ message: "Error saving review" });
+    }
+    res.json({ message: "Rating saved successfully" });
+  });
+});
+
+// Get the current user's rating for a media
+seriesRouter.get("/:id/rating", verifyJWT, (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  const sql = "SELECT rating FROM reviews WHERE media_id = ? AND user_id = ?";
+  pool.query(sql, [mediaId, userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching rating:", err);
+      return res.status(500).json({ message: "Error fetching rating" });
+    }
+
+    if (results.length > 0) {
+      res.json({ rating: results[0].rating });
+    } else {
+      res.json({ rating: 0 });
+    }
   });
 });
 

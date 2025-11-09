@@ -1,4 +1,4 @@
-// ====== Share Button ======
+
 const shareBtn = document.getElementById("sharebtn");
 if (shareBtn) {
   shareBtn.addEventListener("click", () => {
@@ -8,11 +8,12 @@ if (shareBtn) {
   });
 }
 
-// ====== Star Rating Logic ======
+
 const stars = document.querySelectorAll("#starRating span");
 const ratingValue = document.getElementById("ratingValue");
 const submitRating = document.getElementById("submitRating");
 let selectedRating = 0;
+
 
 function updateStarsDisplay(value) {
   stars.forEach(star => {
@@ -20,15 +21,30 @@ function updateStarsDisplay(value) {
   });
 }
 
-if (stars.length > 0) {
-  stars.forEach(star => {
-    star.addEventListener("mouseenter", () => updateStarsDisplay(parseInt(star.dataset.value)));
-    star.addEventListener("mouseleave", () => updateStarsDisplay(selectedRating));
-    star.addEventListener("click", () => {
-      selectedRating = parseInt(star.dataset.value);
-      ratingValue.textContent = `Your rating: ${selectedRating} / 10`;
-    });
+stars.forEach(star => {
+  star.addEventListener("mouseenter", () => updateStarsDisplay(parseInt(star.dataset.value)));
+  star.addEventListener("mouseleave", () => updateStarsDisplay(selectedRating));
+  star.addEventListener("click", () => {
+    selectedRating = parseInt(star.dataset.value);
+    ratingValue.textContent = `Your rating: ${selectedRating} / 10`;
   });
+});
+
+
+async function loadUserRating() {
+  const mediaId = document.body.dataset.mediaId;
+  try {
+    const res = await fetch(`/series/${mediaId}/rating`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.rating > 0) {
+        updateStarsDisplay(data.rating);
+        ratingValue.textContent = `Your rating: ${data.rating} / 10`;
+      }
+    }
+  } catch (err) {
+    console.error("Error fetching user rating:", err);
+  }
 }
 
 if (submitRating) {
@@ -37,19 +53,28 @@ if (submitRating) {
     const mediaId = document.body.dataset.mediaId;
 
     try {
-      const res = await fetch(`/ratings/${mediaId}`, {
+      const res = await fetch(`/series/${mediaId}/rate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rating: selectedRating })
       });
-      if (res.ok) alert("⭐ Rating submitted successfully!");
-      else alert("❌ Error submitting rating.");
+
+      if (res.ok) {
+        alert(`⭐ Rating submitted successfully! (${selectedRating}/10)`);
+      } else {
+        alert("❌ Error submitting rating.");
+      }
     } catch (err) {
       console.error("Rating error:", err);
       alert("⚠️ Network error submitting rating.");
     }
   });
 }
+
+// Initialize
+loadUserRating();
+
+
 
 const addCommentBtn = document.getElementById("addCommentBtn");
 const newComment = document.getElementById("newComment");
@@ -109,5 +134,4 @@ if (addCommentBtn) {
   });
 }
 
-// Load comments on page load
 loadComments();
