@@ -1,163 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><%= series.name %> Details</title>
-	<link rel="stylesheet" href="/css/series-details.css" />
-	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= series.name %> Details</title>
+  <link rel="stylesheet" href="/css/series-details.css" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body>
-	<nav>
-		<div class="logo">
-			<ion-icon name="film-outline"></ion-icon>
-			<span>Cinemate</span>
-		</div>
-		
-		<div class="search-bar">
-			<input type="text" placeholder="Search series..." />
-			<button><ion-icon name="search-outline"></ion-icon></button>
-		</div>
-		
-		<ul>
-			<li><a href="/home">Home</a></li>
-			<li><a href="/popular">Popular</a></li>
-			<li><a href="/settings">Settings</a></li>
-		</ul>
-		
-		<div class="nav-actions">
-			<a href="/settings/profile"><ion-icon name="person-circle-outline"></ion-icon></a>
-		</div>
-	</nav>
-	
-	<section class="hero" style="background-image: url('<%= series.backdrop %>');">
-		<div class="overlay"></div>
-		<div class="hero-content">
-			<h1><%= series.name %></h1>
-			<p class="tagline"><%= series.tagline %></p>
-			<div class="hero-buttons">
-				<button class="btn-primary">Add to Watchlist</button>
-				<button class="btn-secondary" id="sharebtn">Share</button>
-			</div>
-		</div>
+<body data-media-id="<%= series.id %>">
+
+
+  <nav>
+    <div class="logo">
+      <ion-icon name="film-outline"></ion-icon>
+      <span>Cinemate</span>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search series..." />
+      <button><ion-icon name="search-outline"></ion-icon></button>
+    </div>
+
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/settings">Settings</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="/settings/profile"><ion-icon name="person-circle-outline"></ion-icon></a>
+    </div>
+  </nav>
+
+  <section class="hero" style="background-image: url('<%= series.backdrop %>');">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1><%= series.name %></h1>
+      <p class="tagline"><%= series.tagline %></p>
+      <div class="hero-buttons">
+        <button class="btn-primary">Add to Watchlist</button>
+        <button class="btn-favorite" id="favoriteBtn">❤ Add to Favorites</button>
+        <button class="btn-watched" id="watchedBtn">✓ Mark as Watched</button>
+        <button class="btn-secondary" id="sharebtn">Share</button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="overview">
+      <div class="poster">
+        <img src="<%= series.poster %>" alt="<%= series.name %> Poster">
+      </div>
+      <div class="info">
+        <h2>Overview</h2>
+        <p><%= series.overview %></p>
+
+        <div class="meta">
+          <p><strong>Genres:</strong> <%= series.genres.join(', ') %></p>
+          <p><strong>First Air Date:</strong> <%= series.first_air_date %></p>
+          <p><strong>Seasons:</strong> <%= series.seasons.length %></p>
+          <p><strong>Episodes:</strong> <%= series.episode_count %></p>
+          <p><strong>Rating:</strong> ⭐ <%= series.rating %>/10</p>
+          <p><strong>Status:</strong> <%= series.status %></p>
+          <p><strong>Language:</strong> <%= series.language %></p>
+        </div>
+      </div>
+    </section>
+
+<section class="seasons">
+    <div class="rating-container">
+    <div class="stars" id="starRating">
+      <% for(let i=1;i<=10;i++){ %>
+        <span data-value="<%= i %>">★</span>
+      <% } %>
+    </div>
+    <p id="ratingValue">Your rating: 0 / 10</p>
+    <button id="submitRating">Submit Rating</button>
+  </div>
+  <h2>Seasons</h2>
+  <div class="season-grid">
+    <% if(series.paginatedSeasons && series.paginatedSeasons.length > 0){ %>
+      <% series.paginatedSeasons.forEach(season => { %>
+        <div class="season-card <%= season.season_number === series.selectedSeason ? 'active' : '' %>">
+          <% if(season.poster_path){ %>
+            <img src="https://image.tmdb.org/t/p/w300<%= season.poster_path %>" alt="Season <%= season.season_number %>">
+          <% } else { %>
+            <div class="season-placeholder">No Image</div>
+          <% } %>
+          <div class="season-info">
+            <h3>Season <%= season.season_number %></h3>
+            <p><%= season.episode_count %> Episodes</p>
+            <a href="?season=<%= season.season_number %>">View Episodes</a>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>No seasons available.</p>
+    <% } %>
+  </div>
+
+  <div class="pagination">
+    <% for(let i=1; i<=series.totalSeasonPages; i++){ %>
+      <a class="<%= i === series.currentSeasonPage ? 'active' : '' %>" 
+         href="?seasonPage=<%= i %>"><%= i %></a>
+    <% } %>
+  </div>
+
+  <!-- Episodes Section -->
+  <h2>Episodes - Season <%= series.selectedSeason %></h2>
+  <div class="episode-grid">
+    <% if(series.paginatedEpisodes && series.paginatedEpisodes.length > 0){ %>
+      <% series.paginatedEpisodes.forEach(episode => { %>
+        <div class="episode-card">
+          <div class="episode-thumb">
+            <% if(episode.still_path){ %>
+              <img src="https://image.tmdb.org/t/p/w300<%= episode.still_path %>" alt="<%= episode.name %>">
+            <% } else { %>
+              <div class="episode-placeholder">No Image</div>
+            <% } %>
+          </div>
+          <div class="episode-info">
+            <div class="episode-left">
+              <span class="episode-number">S<%= episode.season_number %>E<%= episode.episode_number %></span>
+              <span class="episode-title"><%= episode.name %></span>
+              <p class="episode-overview">
+                <%= episode.overview ? (episode.overview.length > 100 ? episode.overview.substring(0, 100) + '...' : episode.overview) : 'No overview available.' %>
+              </p>
+            </div>
+            <div class="episode-right">
+              <span class="episode-airdate"><%= episode.air_date || 'Date N/A' %></span>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="no-episodes">No episodes available for this season.</p>
+    <% } %>
+  </div>
+
+  <div class="pagination">
+    <% for(let i = 1; i <= series.totalEpisodePages; i++) { %>
+      <a class="<%= i === series.currentEpisodePage ? 'active' : '' %>" 
+         href="?season=<%= series.selectedSeason %>&episodePage=<%= i %>">
+        <%= i %>
+      </a>
+    <% } %>
+  </div>
+</section>
+
+
+
+
+
+
+</section>
+
+
+
+    </section>
+
+	<section class="cast">
+      <h2>Cast</h2>
+      <div class="cast-grid">
+        <% if(series.cast && series.cast.length > 0){ %>
+          <% series.cast.forEach(actor => { %>
+            <div class="cast-card">
+              <img src="https://image.tmdb.org/t/p/w185<%= actor.profile_path %>" alt="<%= actor.name %>">
+              <p class="actor-name"><%= actor.name %></p>
+              <small><%= actor.character %></small>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No cast information available.</p>
+        <% } %>
+      </div>
+    </section>
+
+
+	<section class="comments">
+	<h2>Comments</h2>
+
+	<div class="comments-container">
+
+  </div>
+
+	<div class="comment-form">
+		<textarea id="newComment" placeholder="Write a comment..."></textarea>
+		<button id="addCommentBtn">Send</button>
+	</div>
 	</section>
-	
-	<main>
-		<section class="overview">
-			<div class="poster">
-				<img src="<%= series.poster %>" alt="<%= series.name %> Poster">
-			</div>
-			
-			<div class="info">
-				<h2>Overview</h2>
-				<p><%= series.overview %></p>
-				
-				<div class="meta">
-					<p><strong>Genres:</strong> <%= series.genres.join(', ') %></p>
-					<p><strong>First Air Date:</strong> <%= series.first_air_date %></p>
-					<p><strong>Seasons:</strong> <%= series.seasons.length %></p>
-					<p><strong>Episodes:</strong> <%= series.episode_count %></p>
-					<p><strong>Rating:</strong> ⭐ <%= series.rating %>/10</p>
-					<p><strong>Status:</strong> <%= series.status %></p>
-					<p><strong>Language:</strong> <%= series.language %></p>
-				</div>
-			</div>
-		</section>
-		
-		<section class="seasons">
-			<div class="rating-container">
-			<div class="stars" id="starRating">
-				<span data-value="1">★</span>
-				<span data-value="2">★</span>
-				<span data-value="3">★</span>
-				<span data-value="4">★</span>
-				<span data-value="5">★</span>
-				<span data-value="6">★</span>
-				<span data-value="7">★</span>
-				<span data-value="8">★</span>
-				<span data-value="9">★</span>
-				<span data-value="10">★</span>
-			</div>
-			<p id="ratingValue">Your rating: 0 / 10</p>
-			</div>
-			<h2>Seasons</h2>
-			<div class="season-grid">
-			<% series.seasons.forEach(season => { %>
-				<div class="season-card">
-					<img src="<%= season.poster %>" alt="<%= season.name %>">
-					<div class="season-info">
-						<h3><%= season.name %></h3>
-						<p><%= season.episode_count %> Episodes</p>
-						<p><%= season.air_date %></p>
-						<a href="/series/<%= series.id %>/season/<%= season.number %>" class="btn-view">View Episodes</a>
-					</div>
-				</div>
-				<% }) %>
-			</div>
-		</section>
-			
-		<section class="cast">
-			<h2>Cast</h2>
-			<div class="cast-grid">
-			<% if (series.cast && series.cast.length > 0) { %>
-				<% series.cast.forEach(actor => { %>
-					<div class="cast-card">
-						<img src="https://image.tmdb.org/t/p/w185<%= actor.profile_path %>" alt="<%= actor.name %>">
-						<p class="actor-name"><%= actor.name %></p>
-						<small><%= actor.character %></small>
-					</div>
-					<% }) %>
-					<% } else { %>
-						<p>No cast information available.</p>
-						<% } %>
-			</div>
-			
-		</section>
-	</main>
 
-	<script src="/js/theme.js"></script>
-	<script>
-		const sharebtn = document.getElementById('sharebtn');
-  		sharebtn.addEventListener('click', () => {
-    	const pageUrl = window.location.href;
-    	navigator.clipboard.writeText(pageUrl)
-      		.then(() => {
-        		alert("Page URL copied to clipboard!");
-      		})
-      		.catch(err => {
-        		console.error("Failed to copy URL: ", err);
-      		});
-  		});
+  </main>
 
-		const stars = document.querySelectorAll('#starRating span');
-		const ratingValue = document.getElementById('ratingValue');
-		let selectedRating = 0;
-
-		stars.forEach(star => {
-			star.addEventListener('click', () => {
-			selectedRating = parseInt(star.getAttribute('data-value'));
-			updateStars(selectedRating);
-			});
-
-			star.addEventListener('mouseover', () => {
-			const hoverValue = parseInt(star.getAttribute('data-value'));
-			updateStars(hoverValue);
-			});
-
-			star.addEventListener('mouseout', () => {
-			updateStars(selectedRating);
-			});
-		});
-
-		function updateStars(value) {
-			stars.forEach(s => {
-			s.classList.toggle('active', parseInt(s.getAttribute('data-value')) <= value);
-			});
-			ratingValue.textContent = `Your rating: ${value} / 10`;
-		}
-
-	</script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/series-details.js"></script>
+    
 </body>
 </html>
-				
