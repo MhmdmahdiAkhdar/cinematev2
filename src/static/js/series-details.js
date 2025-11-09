@@ -55,16 +55,14 @@ const addCommentBtn = document.getElementById("addCommentBtn");
 const newComment = document.getElementById("newComment");
 const commentsContainer = document.querySelector(".comments-container");
 const mediaId = document.body.dataset.mediaId;
+
 const currentUserId = localStorage.getItem("userId");
 
-// Load comments on page load
 async function loadComments() {
   if (!commentsContainer) return;
-
   try {
     const res = await fetch(`/series/${mediaId}/comments`);
     if (!res.ok) throw new Error("Failed to fetch comments");
-
     const comments = await res.json();
     commentsContainer.innerHTML = "";
 
@@ -72,9 +70,7 @@ async function loadComments() {
       const commentCard = document.createElement("div");
       commentCard.classList.add("comment-card");
 
-      if (c.user_id == currentUserId) {
-        commentCard.classList.add("user-right");
-      }
+      if (c.user_id == currentUserId) commentCard.classList.add("user-right");
 
       commentCard.innerHTML = `
         <p class="comment-user"><strong>${c.username}:</strong></p>
@@ -84,45 +80,34 @@ async function loadComments() {
       commentsContainer.appendChild(commentCard);
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error loading comments:", err);
   }
 }
 
-// Post a new comment
 if (addCommentBtn) {
   addCommentBtn.addEventListener("click", async () => {
     const text = newComment.value.trim();
-    if (!text) return alert("Please write a comment first!");
+    if (!text) return alert("Comment cannot be empty");
 
     try {
       const res = await fetch(`/series/${mediaId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ comment_text: text }),
+        body: JSON.stringify({ comment_text: text })
       });
 
-      if (!res.ok) throw new Error("Failed to post comment");
-
-      const comment = await res.json();
-      newComment.value = "";
-
-      // Append new comment to container
-      const commentCard = document.createElement("div");
-      commentCard.classList.add("comment-card");
-      if (comment.user_id == currentUserId) commentCard.classList.add("user-right");
-
-      commentCard.innerHTML = `
-        <p class="comment-user"><strong>${comment.username}:</strong></p>
-        <p class="comment-text">${comment.comment_text}</p>
-        <p class="comment-date">${new Date(comment.created_at).toLocaleDateString()}</p>
-      `;
-      commentsContainer.prepend(commentCard);
+      if (res.ok) {
+        newComment.value = "";
+        await loadComments();
+      } else {
+        alert("❌ Error adding comment.");
+      }
     } catch (err) {
-      console.error(err);
-      alert("Error posting comment.");
+      console.error("Add comment error:", err);
+      alert("⚠️ Network error adding comment.");
     }
   });
 }
 
-// Initial load
+// Load comments on page load
 loadComments();

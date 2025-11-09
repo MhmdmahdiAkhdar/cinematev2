@@ -13,7 +13,9 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "304": {}
+        },
         "tags": []
       }
     },
@@ -24,7 +26,9 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "304": {}
+        },
         "tags": []
       }
     },
@@ -35,8 +39,26 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | Dashboard</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/dashboard.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t\r\n\t\t<div class=\"search-bar\">\r\n\t\t\t<input type=\"text\" id=\"search-input\" placeholder=\"Search movies or TV shows...\" />\r\n\t\t\t<button id=\"search-btn\" title=\"Search\">\r\n\t\t\t\t<ion-icon name=\"search-outline\"></ion-icon>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t\t\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\" class=\"active\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media/finished\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/user_media/watchlist\"><ion-icon name=\"bookmark-outline\"></ion-icon> Planned</a></li>\r\n\t\t</ul>\r\n\t\t\r\n\t\t<div class=\"nav-actions\">\r\n\t\t\t<a href=\"/settings\" title=\"Settings\">\r\n\t\t\t\t<ion-icon name=\"settings-outline\"></ion-icon>\r\n\t\t\t</a>\r\n\t\t</div>\r\n\t</nav>\r\n\t\r\n\t<main>\r\n\t\t<section id=\"media-section\" class=\"movie-section\">\r\n\t\t\t<h2>All Media</h2>\r\n\t\t\t<div class=\"movie-grid\" id=\"movies-container\">\r\n\t\t\t\t<p>Loading...</p>\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t</main>\r\n\t\r\n\t<script type=\"module\" src=\"/js/dashboard.js\"></script>\r\n\t<script src=\"/js/theme.js\"></script>\r\n</body>\r\n</html>\r\n"
+            }
+          },
+          "302": {
+            "description": "Found",
+            "schema": {
+              "type": "string",
+              "example": "<p>Found. Redirecting to /login</p>"
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "text/html"
+        ]
       }
     },
     "/home": {
@@ -68,8 +90,44 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User registered successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Email already registered"
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
       }
     },
     "/api/auth/login": {
@@ -79,8 +137,57 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "Green1@gmail.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid email or password"
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
       }
     },
     "/api/auth/change-password": {
@@ -101,8 +208,28 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Logged out successfully"
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
       }
     },
     "/api/auth/delete": {
@@ -192,7 +319,8 @@
                 ]
               }
             }
-          }
+          },
+          "304": {}
         },
         "tags": [],
         "produces": [
@@ -211,8 +339,36 @@
             "required": true
           }
         ],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 13
+                },
+                "comment_text": {
+                  "type": "string",
+                  "example": "asd"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2025-11-09T00:03:57.040Z"
+                },
+                "user_id": {
+                  "type": "number",
+                  "example": 3
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
       }
     },
     "/settings": {
@@ -222,8 +378,19 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | Settings</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/settings.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media/finished\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/user_media/watchlist\"><ion-icon name=\"bookmark-outline\"></ion-icon> Planned</a></li>\r\n\t\t\t<li><a href=\"#\" class=\"active\"><ion-icon name=\"settings-outline\"></ion-icon> Settings</a></li>\r\n\t\t</ul>\r\n\t</nav>\r\n\t\r\n\t<main class=\"main-container\">\r\n\t\t<div class=\"settings-container\">\r\n\t\t\t<h2>Settings</h2>\r\n\t\t\t\r\n\t\t\t<div class=\"settings-option\" id=\"profile-option\">\r\n\t\t\t\t<span>Profile</span>\r\n\t\t\t\t<ion-icon name=\"chevron-forward-outline\"></ion-icon>\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t\t<div class=\"settings-option\" id=\"password-option\">\r\n\t\t\t\t<span>Password</span>\r\n\t\t\t\t<ion-icon name=\"chevron-forward-outline\"></ion-icon>\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t\t<div class=\"settings-option\" id=\"theme-option\">\r\n\t\t\t\t<span>Theme</span>\r\n\t\t\t\t<label class=\"toggle-switch\">\r\n\t\t\t\t\t<input type=\"checkbox\" id=\"theme-toggle-option\">\r\n\t\t\t\t\t<span class=\"slider\"></span>\r\n\t\t\t\t</label>\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t\t<button class=\"delete-option\" id=\"logout-btn\">Logout</button>\r\n\t\t\t<button class=\"delete-option\" id=\"delete-btn\">Delete Account</button>\r\n\t\t</div>\r\n\t</main>\r\n\t\r\n\t<script src=\"/js/theme.js\"></script>\r\n\t<script>\r\n\t\ttry {\r\n\t\t\tauthManager.requireAuth();\r\n\t\t} catch (err) {\r\n\t\t\tconsole.warn(\"Auth manager error:\", err);\r\n\t\t}\r\n\t\t\r\n\t\tconst body = document.body;\r\n\t\tconst themeToggle = document.getElementById(\"theme-toggle-option\");\r\n\t\tconst themeOption = document.getElementById(\"theme-option\");\r\n\t\t\r\n\t\tif (localStorage.getItem(\"theme\") === \"dark\") {\r\n\t\t\tbody.classList.add(\"dark-theme\");\r\n\t\t\tthemeToggle.checked = true;\r\n\t\t}\r\n\t\t\r\n\t\tthemeToggle.addEventListener(\"click\", (e) => {\r\n\t\t\tif (e.target.tagName.toLowerCase() !== \"input\") {\r\n\t\t\t\tthemeToggle.checked = !themeToggle.checked;\r\n\t\t\t}\r\n\t\t\tif (themeToggle.checked) {\r\n\t\t\t\tbody.classList.add(\"dark-theme\");\r\n\t\t\t\tlocalStorage.setItem(\"theme\", \"dark\");\r\n\t\t\t} else {\r\n\t\t\t\tbody.classList.remove(\"dark-theme\");\r\n\t\t\t\tlocalStorage.setItem(\"theme\", \"light\");\r\n\t\t\t}\r\n\t\t});\r\n\t\t\r\n\t\tfunction navigateOnClick(divId, url) {\r\n\t\t\tconst el = document.getElementById(divId);\r\n\t\t\tif (!el) return;\r\n\t\t\tel.style.cursor = \"pointer\";\r\n\t\t\tel.addEventListener(\"click\", () => window.location.href = url);\r\n\t\t}\r\n\t\t\r\n\t\tnavigateOnClick(\"profile-option\", \"/settings/profile\");\r\n\t\tnavigateOnClick(\"password-option\", \"/settings/password\");\r\n\t\t// profile-option\r\n\t\t\r\n\t\tconst profile = document.getElementById(\"profile-option\");\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\tconst logoutBtn = document.getElementById(\"logout-btn\");\r\n\t\tlogoutBtn.addEventListener(\"click\", () => {\r\n\t\t\tfetch(\"/api/auth/logout\", { method: \"POST\" })\r\n\t\t\t.then(res => res.json())\r\n\t\t\t.then(data => {\r\n\t\t\t\tif (data.success) {\r\n\t\t\t\t\twindow.location.href = \"/login\";\r\n\t\t\t\t} else{\r\n\t\t\t\t\tconsole.log(\"error logging out\");\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t});\r\n\t\t\r\n\t\tconst deleteBtn = document.getElementById(\"delete-btn\");\r\n\t\tdeleteBtn.addEventListener(\"click\", () => {\r\n\t\t\tfetch (\"/api/auth/delete\",{method:\"DELETE\",credentials:\"include\"})\r\n\t\t\t.then(res => res.json())\r\n\t\t\t.then(data => {\r\n\t\t\t\tif (data.success) {\r\n\t\t\t\t\twindow.location.href = \"/signup\";\r\n\t\t\t\t} else{\r\n\t\t\t\t\tconsole.log(\"error deleting account\");\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t});\r\n\t</script>\r\n</body>\r\n</html>\r\n"
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "text/html"
+        ]
       }
     },
     "/settings/password": {
@@ -244,8 +411,19 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
-        "tags": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | Change Profile Picture</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/change-avatar.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media/finished\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/user_media/watchlist\"><ion-icon name=\"bookmark-outline\"></ion-icon> Planned</a></li>\r\n\t\t\t<li><a href=\"/settings\" class=\"active\"><ion-icon name=\"settings-outline\"></ion-icon> Settings</a></li>\r\n\t\t</ul>\r\n\t</nav>\r\n\t<main class=\"main-container\">\r\n\t\t<div class=\"card\">\r\n\t\t\t<h2>Change Profile Picture</h2>\r\n\t\t\t\r\n\t\t\t<div class=\"preview\">\r\n\t\t\t\t<img id=\"avatarPreview\" src=\"/users_profiles/f35a41305a0d8db82b5a8633b4ffcec6\" alt=\"Avatar\">\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t\t<form id=\"avatarForm\" enctype=\"multipart/form-data\">\r\n\t\t\t\t<label for=\"avatarInput\" class=\"upload-btn\">📁 Choose Image</label>\r\n\t\t\t\t<input type=\"file\" name=\"avatar\" id=\"avatarInput\" accept=\"image/*\" required>\r\n\t\t\t\t<button type=\"submit\" class=\"btn-upload\">Upload Picture</button>\r\n\t\t\t</form>\r\n\t\t\t\r\n\t\t\t<p id=\"msg\"></p>\r\n\t\t</div>\r\n\t</main>\r\n\t\r\n\t<script src=\"/js/theme.js\"></script>\r\n\t<script>\r\n\t\tconst avatarInput = document.getElementById(\"avatarInput\");\r\n\t\tconst avatarPreview = document.getElementById(\"avatarPreview\");\r\n\t\tconst avatarForm = document.getElementById(\"avatarForm\");\r\n\t\tconst msg = document.getElementById(\"msg\");\r\n\t\t\r\n\t\tavatarInput.addEventListener(\"change\", () => {\r\n\t\t\tconst file = avatarInput.files[0];\r\n\t\t\tif (file) {\r\n\t\t\t\tavatarPreview.src = URL.createObjectURL(file);\r\n\t\t\t}\r\n\t\t});\r\n\t\t\r\n\t\tavatarForm.addEventListener(\"submit\", async (e) => {\r\n\t\t\te.preventDefault();\r\n\t\t\tconst formData = new FormData();\r\n\t\t\tformData.append(\"avatar\", avatarInput.files[0]);\r\n\t\t\t\r\n\t\t\tconst res = await fetch(\"/api/auth/profile/pfp\", {\r\n\t\t\t\tmethod: \"PUT\",\r\n\t\t\t\tbody: formData,\r\n\t\t\t\tcredentials: \"include\",\r\n\t\t\t});\r\n\t\t\t\r\n\t\t\tconst data = await res.json();\r\n\t\t\tif (data.success) {\r\n\t\t\t\tmsg.textContent = \"✅ Profile picture updated!\";\r\n\t\t\t\tmsg.style.color = \"green\";\r\n\t\t\t} else {\r\n\t\t\t\tmsg.textContent = \"❌ Error updating picture\";\r\n\t\t\t\tmsg.style.color = \"red\";\r\n\t\t\t}\r\n\t\t});\r\n\t</script>\r\n</body>\r\n</html>\r\n"
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "text/html"
+        ]
       }
     },
     "/api/media": {
@@ -266,7 +444,9 @@
           "application/json"
         ],
         "parameters": [],
-        "responses": {},
+        "responses": {
+          "304": {}
+        },
         "tags": []
       }
     },
