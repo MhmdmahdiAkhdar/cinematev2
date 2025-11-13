@@ -76,5 +76,25 @@ userMediaRouter.get('/watching', verifyJWT, async (req, res) => {
     });
 })
 
+userMediaRouter.get('/favorate', verifyJWT, async (req, res) => {
+    const userId = req.user.id;
+
+    const sql = `
+        SELECT media.*
+        FROM media
+        JOIN favorites ON media.id = favorites.media_id
+        WHERE favorites.user_id = ?
+        ORDER BY favorites.added_at DESC
+    `;
+
+    pool.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error("DB error:", err);
+            return res.status(500).send("Server error");
+        }
+        res.render("favorate", { movies: results });
+    });
+});
+
 
 export default userMediaRouter;

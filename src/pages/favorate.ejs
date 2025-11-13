@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Cinemate | Watchlist</title>
+	<title>Cinemate | Favorites</title>
 	
 	<link rel="stylesheet" href="/css/dashboard.css" />
 	<link rel="stylesheet" href="/css/theme.css" />
@@ -30,9 +30,9 @@
 		
 		<ul>
 			<li><a href="/dashboard"><ion-icon name="home-outline"></ion-icon> Home</a></li>
-			<li><a href="/user_media/favorate"><ion-icon name="heart-outline"></ion-icon> Favorate</a></li>
+			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> Watchlist</a></li>
 			<li><a href="/user_media/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
-			<li><a href="/watchlist" class="active"><ion-icon name="bookmark-outline"></ion-icon> WatchList</a></li>
+			<li><a href="/user_media/favorate" class="active"><ion-icon name="heart-outline"></ion-icon> Favorites</a></li>
 		</ul>
 		
 		<div class="nav-actions">
@@ -43,13 +43,13 @@
 	</nav>
 	
 	<main>
-		<section id="watchlist-section" class="movie-section">
-			<h2>Your Watchlist</h2>
+		<section id="favorites-section" class="movie-section">
+			<h2>Your Favorites</h2>
 			<div class="movie-grid" id="movies-container">
 				<% if (movies && movies.length > 0) { %>
-					<%- include("movie-grid", { movies: movies, card_type: "watchlist" }) %>
+					<%- include("movie-grid", { movies: movies, card_type: "favorites" }) %>
 				<% } else { %>
-					<p>No movies in your watchlist yet.</p>
+					<p>No favorites yet.</p>
 				<% } %>
 			</div>
 		</section>
@@ -57,21 +57,21 @@
 
 	<script src="/js/theme.js"></script>
 	<script>
-		function removeFromWatchlist(mediaId) {
-			fetch(`/user_media/watchlist/${mediaId}`, {
+		function removeFromFavorites(mediaId) {
+			fetch(`/user_media/favorate/${mediaId}`, {
 				method: "DELETE",
 			})
 			.then(response => response.json())
 			.then(data => {
 				if (data.success) {
-					console.log("✅ Successfully removed from watchlist");
+					console.log("✅ Successfully removed from favorites");
 					location.reload();
 				} else {
-					console.error("❌ Error removing from watchlist:", data.error);
+					console.error("❌ Error removing from favorites:", data.error);
 				}
 			})
 			.catch(error => {
-				console.error("❌ Error removing from watchlist:", error);
+				console.error("❌ Error removing from favorites:", error);
 			});
 		}
 	</script>
