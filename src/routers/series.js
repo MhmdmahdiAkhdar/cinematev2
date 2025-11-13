@@ -306,6 +306,49 @@ seriesRouter.post("/:id/watched/toggle", verifyJWT, (req, res) => {
   });
 });
 
+seriesRouter.get("/:id/progress", verifyJWT, async (req, res) => {
+  const mediaId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    // Get media
+    const [media] = await new Promise((resolve, reject) => {
+      pool.query("SELECT * FROM media WHERE id = ?", [mediaId], (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      });
+    });
+
+    if (!media) return res.status(404).json({ message: "Media not found" });
+
+    let totalEpisodes = 1;
+    if (media.type === "SHOW") {
+      const tmdbRes = await fetch(`${TMDB_BASE_URL}/tv/${mediaId}?api_key=${TMDB_API_KEY}`);
+      const tmdbData = await tmdbRes.json();
+      totalEpisodes = tmdbData.number_of_episodes || 0;
+    }
+
+    // Get watched episodes
+    pool.query(
+      "SELECT season_number, episode_number FROM watched_episodes WHERE user_id = ? AND media_id = ?",
+      [userId, mediaId],
+      (err, results) => {
+        if (err) return res.status(500).json({ message: "DB error" });
+        res.json({
+          watchedEpisodes: results,
+          totalEpisodes,
+          watchedCount: results.length,
+          progress_percent: totalEpisodes ? Math.round((results.length / totalEpisodes) * 100) : 0
+        });
+      }
+    );
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 
 

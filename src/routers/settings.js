@@ -29,7 +29,7 @@ settingsRouter.get("/profile", verifyJWT, async (req,res) => {
         if (results.length === 0) {
             return res.status(404).send("User not found");
         }
-        
+        const userId = req.user.id;
         const user = results[0];
         res.render("profile", { user });
     });

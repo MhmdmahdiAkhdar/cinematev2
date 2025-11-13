@@ -22,30 +22,47 @@ function verifyAdmin(userId) {
 
 
 adminRouter.get("/", verifyJWT, async (req, res) => {
-	try {
-		const isAdmin = await verifyAdmin(req.user.id);
-		if (!isAdmin) {
-			res.status(403).send("Forbidden");
-		}
-		const queries = {
+    try {
+        const isAdmin = await verifyAdmin(req.user.id);
+        if (!isAdmin) return res.status(403).send("Forbidden");
+
+        const queries = {
 			numUsers: "SELECT COUNT(*) AS total FROM users",
-			numFinished: "SELECT COUNT(*) AS total FROM progress WHERE progress_percent = 100",
-			numWatching: "SELECT COUNT(*) AS total FROM progress WHERE progress_percent > 0 AND progress_percent < 100",
-			numPlanned: "SELECT COUNT(*) AS total FROM progress WHERE progress_percent = 0"
+			numMedia: "SELECT COUNT(*) AS total FROM media",
+			numWatchlist: "SELECT COUNT(*) AS total FROM watchlist",
+			numFavorites: "SELECT COUNT(*) AS total FROM favorites",
+			numWatched: "SELECT COUNT(*) AS total FROM progress WHERE progress_percent = 100"
 		};
-		const results = await Promise.all([
-			new Promise((resolve, reject) => pool.query(queries.numUsers, (err, rows) => err ? reject(err) : resolve(rows[0].total))),
-			new Promise((resolve, reject) => pool.query(queries.numFinished, (err, rows) => err ? reject(err) : resolve(rows[0].total))),
-			new Promise((resolve, reject) => pool.query(queries.numWatching, (err, rows) => err ? reject(err) : resolve(rows[0].total))),
-			new Promise((resolve, reject) => pool.query(queries.numPlanned, (err, rows) => err ? reject(err) : resolve(rows[0].total))),
-		]);
-		const [numUsers, numFinished, numWatching, numPlanned] = results;
-		res.render("admin", { numUsers, numFinished, numWatching, numPlanned });
-	} catch (err) {
-		console.error("Admin dashboard error:", err);
-		res.status(500).send("Server error");
-	}
+
+
+        const results = await Promise.all([
+            new Promise((resolve, reject) =>
+                pool.query(queries.numUsers, (err, rows) => err ? reject(err) : resolve(rows[0].total))
+            ),
+            new Promise((resolve, reject) =>
+                pool.query(queries.numMedia, (err, rows) => err ? reject(err) : resolve(rows[0].total))
+            ),
+            new Promise((resolve, reject) =>
+                pool.query(queries.numWatchlist, (err, rows) => err ? reject(err) : resolve(rows[0].total))
+            ),
+            new Promise((resolve, reject) =>
+                pool.query(queries.numFavorites, (err, rows) => err ? reject(err) : resolve(rows[0].total))
+            ),
+            new Promise((resolve, reject) =>
+                pool.query(queries.numWatched, (err, rows) => err ? reject(err) : resolve(rows[0].total))
+            )
+        ]);
+
+        const [numUsers, numMedia, numWatchlist, numFavorites, numWatched] = results;
+
+        res.render("admin", { numUsers, numMedia, numWatchlist, numFavorites, numWatched });
+    } catch (err) {
+        console.error("Admin dashboard error:", err);
+        res.status(500).send("Server error");
+    }
 });
+
+
 
 
 adminRouter.post('/make_admin', verifyJWT, (req, res) => {

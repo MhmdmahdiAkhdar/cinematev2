@@ -60,7 +60,7 @@ authRouter.post("/signup", async(req, res) => {
 authRouter.post("/login", async (req, res) => {
 	const { email, password } = req.body;
 	
-	const sql = "SELECT id, email, password FROM users WHERE email = ?";
+	const sql = "SELECT id, email, password, role FROM users WHERE email = ?";
 	pool.query(sql, [email], async (err, results) => {
 		if (err) return res.status(500).json({ success: false, message: "DB error" });
 		if (results.length === 0) return res.status(401).json({ success: false, message: "Invalid email or password" });
@@ -68,14 +68,14 @@ authRouter.post("/login", async (req, res) => {
 		const user = results[0];
 		const isMatch = await bcrypt.compare(password, user.password)
 		if (!isMatch) return res.status(401).json({ success: false, message: "Invalid email or password" });
-		const token = jwt.sign({id:user.id,email:user.email}, JWT_SECRET,{expiresIn:"2h"});
+		const token = jwt.sign({id:user.id,email:user.email,role: user.role}, JWT_SECRET,{expiresIn:"2h"});
 		res.cookie("token",token,{
 			httpOnly: true,
 			secure:false,
 			sameSite:"lax",
 			maxAge:2*60*60*1000,
 		});
-		res.json({ success: true, message: "Login successful", user: { id: user.id, email: user.email } });
+		res.json({ success: true, message: "Login successful", user: { id: user.id, email: user.email,role: user.role } });
 	});
 });
 

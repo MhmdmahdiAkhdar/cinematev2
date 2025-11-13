@@ -26,7 +26,12 @@
 			<li><a href="/dashboard" class="active"><ion-icon name="home-outline"></ion-icon> Home</a></li>
 			<li><a href="/user_media/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
 			<li><a href="/user_media/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
-			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> Planned</a></li>
+			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> WatchList</a></li>
+			<li>
+				<% if (user && user.role && user.role.toLowerCase() === 'admin') { %>
+					<a href="/admin">Admin</a>
+				<% } %>
+			</li>
 		</ul>
 		
 		<div class="nav-actions">

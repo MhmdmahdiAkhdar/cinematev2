@@ -10,16 +10,11 @@
 </head>
 <body data-media-id="<%= series.id %>">
 
-
+  <!-- NAVIGATION -->
   <nav>
     <div class="logo">
       <ion-icon name="film-outline"></ion-icon>
       <span>Cinemate</span>
-    </div>
-
-    <div class="search-bar">
-      <input type="text" placeholder="Search series..." />
-      <button><ion-icon name="search-outline"></ion-icon></button>
     </div>
 
     <ul>
@@ -32,6 +27,7 @@
     </div>
   </nav>
 
+  <!-- HERO SECTION -->
   <section class="hero" style="background-image: url('<%= series.backdrop %>');">
     <div class="overlay"></div>
     <div class="hero-content">
@@ -47,6 +43,7 @@
   </section>
 
   <main>
+    <!-- OVERVIEW -->
     <section class="overview">
       <div class="poster">
         <img src="<%= series.poster %>" alt="<%= series.name %> Poster">
@@ -67,99 +64,100 @@
       </div>
     </section>
 
-<section class="seasons">
+    <!-- STAR RATING -->
     <div class="rating-container">
-    <div class="stars" id="starRating">
-      <% for(let i=1;i<=10;i++){ %>
-        <span data-value="<%= i %>">★</span>
-      <% } %>
+      <div class="stars" id="starRating">
+        <% for(let i=1;i<=10;i++){ %>
+          <span data-value="<%= i %>">★</span>
+        <% } %>
+      </div>
+      <p id="ratingValue">Your rating: 0 / 10</p>
+      <button id="submitRating">Submit Rating</button>
     </div>
-    <p id="ratingValue">Your rating: 0 / 10</p>
-    <button id="submitRating">Submit Rating</button>
-  </div>
-  <h2>Seasons</h2>
-  <div class="season-grid">
-    <% if(series.paginatedSeasons && series.paginatedSeasons.length > 0){ %>
-      <% series.paginatedSeasons.forEach(season => { %>
-        <div class="season-card <%= season.season_number === series.selectedSeason ? 'active' : '' %>">
-          <% if(season.poster_path){ %>
-            <img src="https://image.tmdb.org/t/p/w300<%= season.poster_path %>" alt="Season <%= season.season_number %>">
-          <% } else { %>
-            <div class="season-placeholder">No Image</div>
-          <% } %>
-          <div class="season-info">
-            <h3>Season <%= season.season_number %></h3>
-            <p><%= season.episode_count %> Episodes</p>
-            <a href="?season=<%= season.season_number %>">View Episodes</a>
-          </div>
-        </div>
-      <% }) %>
-    <% } else { %>
-      <p>No seasons available.</p>
-    <% } %>
-  </div>
 
-  <div class="pagination">
-    <% for(let i=1; i<=series.totalSeasonPages; i++){ %>
-      <a class="<%= i === series.currentSeasonPage ? 'active' : '' %>" 
-         href="?seasonPage=<%= i %>"><%= i %></a>
-    <% } %>
-  </div>
-
-  <!-- Episodes Section -->
-  <h2>Episodes - Season <%= series.selectedSeason %></h2>
-  <div class="episode-grid">
-    <% if(series.paginatedEpisodes && series.paginatedEpisodes.length > 0){ %>
-      <% series.paginatedEpisodes.forEach(episode => { %>
-        <div class="episode-card">
-          <div class="episode-thumb">
-            <% if(episode.still_path){ %>
-              <img src="https://image.tmdb.org/t/p/w300<%= episode.still_path %>" alt="<%= episode.name %>">
-            <% } else { %>
-              <div class="episode-placeholder">No Image</div>
-            <% } %>
-          </div>
-          <div class="episode-info">
-            <div class="episode-left">
-              <span class="episode-number">S<%= episode.season_number %>E<%= episode.episode_number %></span>
-              <span class="episode-title"><%= episode.name %></span>
-              <p class="episode-overview">
-                <%= episode.overview ? (episode.overview.length > 100 ? episode.overview.substring(0, 100) + '...' : episode.overview) : 'No overview available.' %>
-              </p>
+    <!-- SEASONS -->
+    <section class="seasons">
+      <h2>Seasons</h2>
+      <div class="season-grid">
+        <% if(series.paginatedSeasons && series.paginatedSeasons.length > 0){ %>
+          <% series.paginatedSeasons.forEach(season => { %>
+            <div class="season-card <%= season.season_number === series.selectedSeason ? 'active' : '' %>">
+              <% if(season.poster_path){ %>
+                <img src="https://image.tmdb.org/t/p/w300<%= season.poster_path %>" alt="Season <%= season.season_number %>">
+              <% } else { %>
+                <div class="season-placeholder">No Image</div>
+              <% } %>
+              <div class="season-info">
+                <h3>Season <%= season.season_number %></h3>
+                <p><%= season.episode_count %> Episodes</p>
+                <a href="?season=<%= season.season_number %>">View Episodes</a>
+              </div>
             </div>
-            <div class="episode-right">
-              <span class="episode-airdate"><%= episode.air_date || 'Date N/A' %></span>
+          <% }) %>
+        <% } else { %>
+          <p>No seasons available.</p>
+        <% } %>
+      </div>
+
+      <!-- SEASON PAGINATION -->
+      <div class="pagination">
+        <% for(let i=1; i<=series.totalSeasonPages; i++){ %>
+          <a class="<%= i === series.currentSeasonPage ? 'active' : '' %>" 
+             href="?seasonPage=<%= i %>"><%= i %></a>
+        <% } %>
+      </div>
+
+      <!-- EPISODES -->
+      <h2>Episodes - Season <%= series.selectedSeason %></h2>
+      <div class="episode-grid">
+        <% if(series.paginatedEpisodes && series.paginatedEpisodes.length > 0){ %>
+          <% series.paginatedEpisodes.forEach(episode => { %>
+            <div class="episode-card">
+              <div class="episode-thumb">
+                <% if(episode.still_path){ %>
+                  <img src="https://image.tmdb.org/t/p/w300<%= episode.still_path %>" alt="<%= episode.name %>">
+                <% } else { %>
+                  <div class="episode-placeholder">No Image</div>
+                <% } %>
+                    <button class="btn-watched-ep" 
+                            data-season="<%= episode.season_number %>" 
+                            data-episode="<%= episode.episode_number %>">
+                      ✓ Watched
+                    </button>
+
+              </div>
+              <div class="episode-info">
+                <div class="episode-left">
+                  <span class="episode-number">S<%= episode.season_number %>E<%= episode.episode_number %></span>
+                  <span class="episode-title"><%= episode.name %></span>
+                  <p class="episode-overview">
+                    <%= episode.overview ? (episode.overview.length > 100 ? episode.overview.substring(0, 100) + '...' : episode.overview) : 'No overview available.' %>
+                  </p>
+                </div>
+                <div class="episode-right">
+                  <span class="episode-airdate"><%= episode.air_date || 'Date N/A' %></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      <% }) %>
-    <% } else { %>
-      <p class="no-episodes">No episodes available for this season.</p>
-    <% } %>
-  </div>
+          <% }) %>
+        <% } else { %>
+          <p class="no-episodes">No episodes available for this season.</p>
+        <% } %>
+      </div>
 
-  <div class="pagination">
-    <% for(let i = 1; i <= series.totalEpisodePages; i++) { %>
-      <a class="<%= i === series.currentEpisodePage ? 'active' : '' %>" 
-         href="?season=<%= series.selectedSeason %>&episodePage=<%= i %>">
-        <%= i %>
-      </a>
-    <% } %>
-  </div>
-</section>
-
-
-
-
-
-
-</section>
-
-
-
+      <!-- EPISODE PAGINATION -->
+      <div class="pagination">
+        <% for(let i = 1; i <= series.totalEpisodePages; i++) { %>
+          <a class="<%= i === series.currentEpisodePage ? 'active' : '' %>" 
+             href="?season=<%= series.selectedSeason %>&episodePage=<%= i %>">
+            <%= i %>
+          </a>
+        <% } %>
+      </div>
     </section>
 
-	<section class="cast">
+    <!-- CAST -->
+    <section class="cast">
       <h2>Cast</h2>
       <div class="cast-grid">
         <% if(series.cast && series.cast.length > 0){ %>
@@ -176,24 +174,18 @@
       </div>
     </section>
 
-
-	<section class="comments">
-	<h2>Comments</h2>
-
-	<div class="comments-container">
-
-  </div>
-
-	<div class="comment-form">
-		<textarea id="newComment" placeholder="Write a comment..."></textarea>
-		<button id="addCommentBtn">Send</button>
-	</div>
-	</section>
-
+    <!-- COMMENTS -->
+    <section class="comments">
+      <h2>Comments</h2>
+      <div class="comments-container"></div>
+      <div class="comment-form">
+        <textarea id="newComment" placeholder="Write a comment..."></textarea>
+        <button id="addCommentBtn">Send</button>
+      </div>
+    </section>
   </main>
 
   <script src="/js/theme.js"></script>
   <script src="/js/series-details.js"></script>
-    
 </body>
 </html>

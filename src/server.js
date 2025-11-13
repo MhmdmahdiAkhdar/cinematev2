@@ -46,9 +46,11 @@ app.use(express.json());
 // basic pages
 app.get("/signup", (req, res) => res.render("signup"));
 app.get("/login", (req, res) => res.render("login"));
-app.get("/dashboard", verifyJWT, (req, res) => res.render("dashboard"));
 app.get("/home", (req, res) => res.redirect("/dashboard"));
 app.get("/", (req, res) => res.redirect("/signup"));
+app.get("/dashboard", verifyJWT, (req, res) => {const user = req.user;res.render("dashboard", { user });});
+
+
 
 //route
 app.use("/api/auth", authRouter);

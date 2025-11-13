@@ -20,39 +20,23 @@
         "tags": []
       }
     },
-    "/dashboard": {
-      "get": {
-        "summary": "/dashboard",
-        "responses": {
-          "304": {
-            "description": ""
-          }
-        },
-        "tags": []
-      }
-    },
     "/home": {
       "get": {
         "summary": "/home",
-        "responses": {
-          "302": {
-            "description": "Found",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "type": "string",
-                  "example": "<p>Found. Redirecting to /dashboard</p>"
-                }
-              }
-            }
-          }
-        },
+        "responses": {},
         "tags": []
       }
     },
     "/": {
       "get": {
         "summary": "/",
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "summary": "/dashboard",
         "responses": {},
         "tags": []
       }
@@ -113,6 +97,17 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n  <meta charset=\"UTF-8\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <title> Details</title>\r\n  <link rel=\"stylesheet\" href=\"/css/series-details.css\" />\r\n  <script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n  <script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body data-media-id=\"1544633\">\r\n\r\n  <!-- NAVIGATION -->\r\n  <nav>\r\n    <div class=\"logo\">\r\n      <ion-icon name=\"film-outline\"></ion-icon>\r\n      <span>Cinemate</span>\r\n    </div>\r\n\r\n    <ul>\r\n      <li><a href=\"/home\">Home</a></li>\r\n      <li><a href=\"/settings\">Settings</a></li>\r\n    </ul>\r\n\r\n    <div class=\"nav-actions\">\r\n      <a href=\"/settings/profile\"><ion-icon name=\"person-circle-outline\"></ion-icon></a>\r\n    </div>\r\n  </nav>\r\n\r\n  <!-- HERO SECTION -->\r\n  <section class=\"hero\" style=\"background-image: url('https://image.tmdb.org/t/p/originalnull');\">\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"hero-content\">\r\n      <h1></h1>\r\n      <p class=\"tagline\"></p>\r\n      <div class=\"hero-buttons\">\r\n        <button class=\"btn-primary\">Add to Watchlist</button>\r\n        <button class=\"btn-favorite\" id=\"favoriteBtn\">❤ Add to Favorites</button>\r\n        <button class=\"btn-watched\" id=\"watchedBtn\">✓ Mark as Watched</button>\r\n        <button class=\"btn-secondary\" id=\"sharebtn\">Share</button>\r\n      </div>\r\n    </div>\r\n  </section>\r\n\r\n  <main>\r\n    <!-- OVERVIEW -->\r\n    <section class=\"overview\">\r\n      <div class=\"poster\">\r\n        <img src=\"https://image.tmdb.org/t/p/w500/tUbFaLY6Ys9T2wTNvPUJARi5Eri.jpg\" alt=\" Poster\">\r\n      </div>\r\n      <div class=\"info\">\r\n        <h2>Overview</h2>\r\n        <p>A widower&#39;s life is turned upside down when he begins a romance with a television personality.</p>\r\n\r\n        <div class=\"meta\">\r\n          <p><strong>Genres:</strong> Comedy, Romance</p>\r\n          <p><strong>First Air Date:</strong> </p>\r\n          <p><strong>Seasons:</strong> 0</p>\r\n          <p><strong>Episodes:</strong> 1</p>\r\n          <p><strong>Rating:</strong> ⭐ 0/10</p>\r\n          <p><strong>Status:</strong> Released</p>\r\n          <p><strong>Language:</strong> LT</p>\r\n        </div>\r\n      </div>\r\n    </section>\r\n\r\n    <!-- STAR RATING -->\r\n    <div class=\"rating-container\">\r\n      <div class=\"stars\" id=\"starRating\">\r\n        \r\n          <span data-value=\"1\">★</span>\r\n        \r\n          <span data-value=\"2\">★</span>\r\n        \r\n          <span data-value=\"3\">★</span>\r\n        \r\n          <span data-value=\"4\">★</span>\r\n        \r\n          <span data-value=\"5\">★</span>\r\n        \r\n          <span data-value=\"6\">★</span>\r\n        \r\n          <span data-value=\"7\">★</span>\r\n        \r\n          <span data-value=\"8\">★</span>\r\n        \r\n          <span data-value=\"9\">★</span>\r\n        \r\n          <span data-value=\"10\">★</span>\r\n        \r\n      </div>\r\n      <p id=\"ratingValue\">Your rating: 0 / 10</p>\r\n      <button id=\"submitRating\">Submit Rating</button>\r\n    </div>\r\n\r\n    <!-- SEASONS -->\r\n    <section class=\"seasons\">\r\n      <h2>Seasons</h2>\r\n      <div class=\"season-grid\">\r\n        \r\n          <p>No seasons available.</p>\r\n        \r\n      </div>\r\n\r\n      <!-- SEASON PAGINATION -->\r\n      <div class=\"pagination\">\r\n        \r\n      </div>\r\n\r\n      <!-- EPISODES -->\r\n      <h2>Episodes - Season 1</h2>\r\n      <div class=\"episode-grid\">\r\n        \r\n          \r\n            <div class=\"episode-card\">\r\n              <div class=\"episode-thumb\">\r\n                \r\n                  <img src=\"https://image.tmdb.org/t/p/w300/tUbFaLY6Ys9T2wTNvPUJARi5Eri.jpg\" alt=\"Laimingos žvaigždės\">\r\n                \r\n                    <button class=\"btn-watched-ep\" \r\n                            data-season=\"\" \r\n                            data-episode=\"1\">\r\n                      ✓ Watched\r\n                    </button>\r\n\r\n              </div>\r\n              <div class=\"episode-info\">\r\n                <div class=\"episode-left\">\r\n                  <span class=\"episode-number\">SE1</span>\r\n                  <span class=\"episode-title\">Laimingos žvaigždės</span>\r\n                  <p class=\"episode-overview\">\r\n                    A widower&#39;s life is turned upside down when he begins a romance with a television personality.\r\n                  </p>\r\n                </div>\r\n                <div class=\"episode-right\">\r\n                  <span class=\"episode-airdate\">2025-10-31</span>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          \r\n        \r\n      </div>\r\n\r\n      <!-- EPISODE PAGINATION -->\r\n      <div class=\"pagination\">\r\n        \r\n          <a class=\"active\" \r\n             href=\"?season=1&episodePage=1\">\r\n            1\r\n          </a>\r\n        \r\n      </div>\r\n    </section>\r\n\r\n    <!-- CAST -->\r\n    <section class=\"cast\">\r\n      <h2>Cast</h2>\r\n      <div class=\"cast-grid\">\r\n        \r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/bqiuVc4Hy0mZdXEkngWhheTA4rj.jpg\" alt=\"Justinas Jankevičius\">\r\n              <p class=\"actor-name\">Justinas Jankevičius</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/otm4XV2huIENXjxCW6IXMwOxcz6.jpg\" alt=\"Ineta Stasiulytė\">\r\n              <p class=\"actor-name\">Ineta Stasiulytė</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/A8smSE4bjk713DB6BfiqKwnNxFe.jpg\" alt=\"Valentinas Krulikovskis\">\r\n              <p class=\"actor-name\">Valentinas Krulikovskis</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/6L8se4vVD3zbMigY2ybluXA0wsY.jpg\" alt=\"Mindaugas Capas\">\r\n              <p class=\"actor-name\">Mindaugas Capas</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/7vDG3AMYLZ0GBk5OqSCFDtvb0cM.jpg\" alt=\"Larisa Kalpokaitė\">\r\n              <p class=\"actor-name\">Larisa Kalpokaitė</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/r6Gdi2P7D6cPHcgTvvO4NSzvb9I.jpg\" alt=\"Liubomiras Laucevicius\">\r\n              <p class=\"actor-name\">Liubomiras Laucevicius</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185\" alt=\"Rolandas Mackevičius\">\r\n              <p class=\"actor-name\">Rolandas Mackevičius</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185\" alt=\"Teodoras Lipčius\">\r\n              <p class=\"actor-name\">Teodoras Lipčius</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/82VrI3eus5Zma08TVwTFUnCDKWC.jpg\" alt=\"Sandra Daukšaitė-Petrulėnė\">\r\n              <p class=\"actor-name\">Sandra Daukšaitė-Petrulėnė</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n            <div class=\"cast-card\">\r\n              <img src=\"https://image.tmdb.org/t/p/w185/9E2P758vLUbCj1mIoYsXXMijJ0k.jpg\" alt=\"Aldona Vilutytė\">\r\n              <p class=\"actor-name\">Aldona Vilutytė</p>\r\n              <small></small>\r\n            </div>\r\n          \r\n        \r\n      </div>\r\n    </section>\r\n\r\n    <!-- COMMENTS -->\r\n    <section class=\"comments\">\r\n      <h2>Comments</h2>\r\n      <div class=\"comments-container\"></div>\r\n      <div class=\"comment-form\">\r\n        <textarea id=\"newComment\" placeholder=\"Write a comment...\"></textarea>\r\n        <button id=\"addCommentBtn\">Send</button>\r\n      </div>\r\n    </section>\r\n  </main>\r\n\r\n  <script src=\"/js/theme.js\"></script>\r\n  <script src=\"/js/series-details.js\"></script>\r\n</body>\r\n</html>\r\n"
+                }
+              }
+            }
+          },
           "304": {
             "description": ""
           }
@@ -208,6 +203,22 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "inWatchlist": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
           "304": {
             "description": ""
           }
@@ -238,7 +249,7 @@
                   "properties": {
                     "inWatchlist": {
                       "type": "boolean",
-                      "example": false
+                      "example": true
                     }
                   }
                 }
@@ -272,12 +283,15 @@
                   "properties": {
                     "inFavorites": {
                       "type": "boolean",
-                      "example": false
+                      "example": true
                     }
                   }
                 }
               }
             }
+          },
+          "304": {
+            "description": ""
           }
         },
         "tags": []
@@ -340,12 +354,15 @@
                   "properties": {
                     "isWatched": {
                       "type": "boolean",
-                      "example": false
+                      "example": true
                     }
                   }
                 }
               }
             }
+          },
+          "304": {
+            "description": ""
           }
         },
         "tags": []
@@ -385,14 +402,31 @@
         "tags": []
       }
     },
-    "/settings": {
+    "/series/{id}/progress": {
       "get": {
-        "summary": "/settings",
+        "summary": "/series/{id}/progress",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "304": {
             "description": ""
           }
         },
+        "tags": []
+      }
+    },
+    "/settings": {
+      "get": {
+        "summary": "/settings",
+        "responses": {},
         "tags": []
       }
     },
@@ -420,11 +454,7 @@
     "/api/media/search": {
       "get": {
         "summary": "/api/media/search",
-        "responses": {
-          "304": {
-            "description": ""
-          }
-        },
+        "responses": {},
         "tags": []
       }
     },
@@ -438,22 +468,7 @@
     "/user_media/watchlist": {
       "get": {
         "summary": "/user_media/watchlist",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "type": "string",
-                  "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | Watchlist</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/dashboard.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n\t<style>\r\n\t\t.remove-button {\r\n\t\t\tbackground-color: #d02e2e;\r\n\t\t\tcolor: #fff;\r\n\t\t\tborder: none;\r\n\t\t\tpadding: 5px 10px;\r\n\t\t\tcursor: pointer;\r\n\t\t\tborder-radius: 5px;\r\n\t\t}\r\n\t\t.remove-button ion-icon {\r\n\t\t\tfont-size: 18px;\r\n\t\t}\r\n\t</style>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t\r\n\t\t<div class=\"search-bar\">\r\n\t\t\t<input type=\"text\" id=\"search-input\" placeholder=\"Search movies or TV shows...\" />\r\n\t\t\t<button id=\"search-btn\" title=\"Search\">\r\n\t\t\t\t<ion-icon name=\"search-outline\"></ion-icon>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t\t\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media/finished\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/watchlist\" class=\"active\"><ion-icon name=\"bookmark-outline\"></ion-icon> Watchlist</a></li>\r\n\t\t</ul>\r\n\t\t\r\n\t\t<div class=\"nav-actions\">\r\n\t\t\t<a href=\"/settings\" title=\"Settings\">\r\n\t\t\t\t<ion-icon name=\"settings-outline\"></ion-icon>\r\n\t\t\t</a>\r\n\t\t</div>\r\n\t</nav>\r\n\t\r\n\t<main>\r\n\t\t<section id=\"watchlist-section\" class=\"movie-section\">\r\n\t\t\t<h2>Your Watchlist</h2>\r\n\t\t\t<div class=\"movie-grid\" id=\"movies-container\">\r\n\t\t\t\t\r\n\t\t\t\t\t\r\n\t\r\n\t\t<div class=\"movie-card\">\r\n\t\t\t<img onclick=\"window.location.href='/series/1084242'\" src=\"https://image.tmdb.org/t/p/w500/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg\" alt=\"Zootopia 2\">\r\n\t\t\t<div class=\"overlay\">\r\n\t\t\t\t<div class=\"info\">\r\n\t\t\t\t\t<h4>Zootopia 2</h4>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t\tMovie |\r\n\t\t\t\t\t\t2025\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t\t<button class=\"remove-button\" onclick=\"removeFromWatchlist('1084242')\" title=\"Remove from Watchlist\">\r\n\t\t\t\t\t\t<ion-icon name=\"trash-outline\"></ion-icon>\r\n\t\t\t\t\t</button>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\r\n\r\n\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t</main>\r\n\r\n\t<script src=\"/js/theme.js\"></script>\r\n\t<script>\r\n\t\tfunction removeFromWatchlist(mediaId) {\r\n\t\t\tfetch(`/user_media/watchlist/${mediaId}`, {\r\n\t\t\t\tmethod: \"DELETE\",\r\n\t\t\t})\r\n\t\t\t.then(response => response.json())\r\n\t\t\t.then(data => {\r\n\t\t\t\tif (data.success) {\r\n\t\t\t\t\tconsole.log(\"✅ Successfully removed from watchlist\");\r\n\t\t\t\t\tlocation.reload();\r\n\t\t\t\t} else {\r\n\t\t\t\t\tconsole.error(\"❌ Error removing from watchlist:\", data.error);\r\n\t\t\t\t}\r\n\t\t\t})\r\n\t\t\t.catch(error => {\r\n\t\t\t\tconsole.error(\"❌ Error removing from watchlist:\", error);\r\n\t\t\t});\r\n\t\t}\r\n\t</script>\r\n</body>\r\n</html>"
-                }
-              }
-            }
-          },
-          "304": {
-            "description": ""
-          }
-        },
+        "responses": {},
         "tags": []
       }
     },
@@ -477,33 +492,14 @@
     "/user_media/finished": {
       "get": {
         "summary": "/user_media/finished",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "type": "string",
-                  "example": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n\t<meta charset=\"UTF-8\" />\r\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n\t<title>Cinemate | FinishedList</title>\r\n\t\r\n\t<link rel=\"stylesheet\" href=\"/css/dashboard.css\" />\r\n\t<link rel=\"stylesheet\" href=\"/css/theme.css\" />\r\n\t<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\" rel=\"stylesheet\">\r\n\t<script type=\"module\" src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js\"></script>\r\n\t<script nomodule src=\"https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js\"></script>\r\n</head>\r\n<body>\r\n\t<nav>\r\n\t\t<div class=\"logo\">🎬 Cinemate</div>\r\n\t\t\r\n\t\t<div class=\"search-bar\">\r\n\t\t\t<input type=\"text\" id=\"search-input\" placeholder=\"Search movies or TV shows...\" />\r\n\t\t\t<button id=\"search-btn\" title=\"Search\">\r\n\t\t\t\t<ion-icon name=\"search-outline\"></ion-icon>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t\t\r\n\t\t<ul>\r\n\t\t\t<li><a href=\"/dashboard\"><ion-icon name=\"home-outline\"></ion-icon> Home</a></li>\r\n\t\t\t<li><a href=\"/user_media/watching\"><ion-icon name=\"play-circle-outline\"></ion-icon> Watching</a></li>\r\n\t\t\t<li><a href=\"/user_media_finished\" class=\"active\"><ion-icon name=\"checkmark-circle-outline\"></ion-icon> Finished</a></li>\r\n\t\t\t<li><a href=\"/user_media/watchlist\"><ion-icon name=\"bookmark-outline\"></ion-icon> FinishedList</a></li>\r\n\t\t</ul>\r\n\t\t\r\n\t\t<div class=\"nav-actions\">\r\n\t\t\t<a href=\"/settings\" title=\"Settings\">\r\n\t\t\t\t<ion-icon name=\"settings-outline\"></ion-icon>\r\n\t\t\t</a>\r\n\t\t</div>\r\n\t</nav>\r\n\t\r\n\t<main>\r\n\t\t<section id=\"finished-list-section\" class=\"movie-section\">\r\n\t\t\t<h2>Your FinishedList</h2>\r\n\t\t\t<div class=\"movie-grid\" id=\"movies-container\">\r\n\t\t\t\t\r\n\t\t\t\t\t\r\n\t\r\n\t\t<div class=\"movie-card\">\r\n\t\t\t<img onclick=\"window.location.href='/series/1084242'\" src=\"https://image.tmdb.org/t/p/w500/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg\" alt=\"Zootopia 2\">\r\n\t\t\t<div class=\"overlay\">\r\n\t\t\t\t<div class=\"info\">\r\n\t\t\t\t\t<h4>Zootopia 2</h4>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t\tMovie |\r\n\t\t\t\t\t\t2025\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\r\n\r\n\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t</main>\r\n\r\n\t<script src=\"/js/theme.js\"></script>\r\n</body>\r\n</html>"
-                }
-              }
-            }
-          },
-          "304": {
-            "description": ""
-          }
-        },
+        "responses": {},
         "tags": []
       }
     },
     "/user_media/watching": {
       "get": {
         "summary": "/user_media/watching",
-        "responses": {
-          "304": {
-            "description": ""
-          }
-        },
+        "responses": {},
         "tags": []
       }
     },

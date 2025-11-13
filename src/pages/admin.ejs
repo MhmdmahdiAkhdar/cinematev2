@@ -24,10 +24,10 @@
 		</div>
 		
 		<ul>
-			<li><a href="/dashboard" class="active"><ion-icon name="home-outline"></ion-icon> Home</a></li>
+			<li><a href="/dashboard"><ion-icon name="home-outline"></ion-icon> Home</a></li>
 			<li><a href="/user_media/watching"><ion-icon name="play-circle-outline"></ion-icon> Watching</a></li>
 			<li><a href="/user_media/finished"><ion-icon name="checkmark-circle-outline"></ion-icon> Finished</a></li>
-			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> Planned</a></li>
+			<li><a href="/user_media/watchlist"><ion-icon name="bookmark-outline"></ion-icon> Watchlist</a></li>
 		</ul>
 		
 		<div class="nav-actions">
@@ -52,32 +52,32 @@
 			</div>
 
 			<div class="stat-card">
-				<div class="stat-icon watching">
-					<ion-icon name="play-outline"></ion-icon>
+				<div class="stat-icon media">
+					<ion-icon name="film-outline"></ion-icon>
 				</div>
 				<div class="stat-info">
-					<h2><%= numWatching %></h2>
-					<p>Currently Watching</p>
+					<h2><%= numMedia %></h2>
+					<p>Total Media</p>
 				</div>
 			</div>
 
 			<div class="stat-card">
-				<div class="stat-icon finished">
-					<ion-icon name="checkmark-done-outline"></ion-icon>
-				</div>
-				<div class="stat-info">
-					<h2><%= numFinished %></h2>
-					<p>Finished</p>
-				</div>
-			</div>
-
-			<div class="stat-card">
-				<div class="stat-icon planned">
+				<div class="stat-icon watchlist">
 					<ion-icon name="bookmark-outline"></ion-icon>
 				</div>
 				<div class="stat-info">
-					<h2><%= numPlanned %></h2>
-					<p>Planned</p>
+					<h2><%= numWatchlist %></h2>
+					<p>Watchlist Entries</p>
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-icon favorites">
+					<ion-icon name="heart-outline"></ion-icon>
+				</div>
+				<div class="stat-info">
+					<h2><%= numFavorites %></h2>
+					<p>Favorites Entries</p>
 				</div>
 			</div>
 		</div>
