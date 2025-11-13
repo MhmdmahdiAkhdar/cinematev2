@@ -196,5 +196,93 @@ mediaManagerRouter.get("/sync",verifyJWT, async (req, res) => {
 	}
 });
 
+mediaManagerRouter.post("/series/:id/episode/:season/:episode/toggle", verifyJWT, async (req, res) => {
+  const userId = req.user.id; // from verifyJWT
+  const seriesId = req.params.id;
+  const seasonNumber = parseInt(req.params.season);
+  const episodeNumber = parseInt(req.params.episode);
+
+  try {
+    // check if episode already watched
+    const [rows] = await pool.promise().query(
+      `SELECT * FROM watched_episodes WHERE user_id = ? AND series_id = ? AND season_number = ? AND episode_number = ?`,
+      [userId, seriesId, seasonNumber, episodeNumber]
+    );
+
+    let watched = false;
+    if (rows.length > 0) {
+      // remove it
+      await pool.promise().query(
+        `DELETE FROM watched_episodes WHERE user_id = ? AND series_id = ? AND season_number = ? AND episode_number = ?`,
+        [userId, seriesId, seasonNumber, episodeNumber]
+      );
+      watched = false;
+    } else {
+      // mark as watched
+      await pool.promise().query(
+        `INSERT INTO watched_episodes (user_id, series_id, season_number, episode_number) VALUES (?, ?, ?, ?)`,
+        [userId, seriesId, seasonNumber, episodeNumber]
+      );
+      watched = true;
+    }
+
+    res.json({ watched });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error toggling episode" });
+  }
+});
+
+mediaManagerRouter.post("/series/:id/watched/toggle", verifyJWT, async (req, res) => {
+  const userId = req.user.id;
+  const seriesId = req.params.id;
+
+  try {
+    const [rows] = await pool.promise().query(
+      `SELECT * FROM watched_series WHERE user_id = ? AND series_id = ?`,
+      [userId, seriesId]
+    );
+
+    let isWatched = false;
+    if (rows.length > 0) {
+      await pool.promise().query(
+        `DELETE FROM watched_series WHERE user_id = ? AND series_id = ?`,
+        [userId, seriesId]
+      );
+      isWatched = false;
+    } else {
+      await pool.promise().query(
+        `INSERT INTO watched_series (user_id, series_id) VALUES (?, ?)`,
+        [userId, seriesId]
+      );
+      isWatched = true;
+    }
+
+    res.json({ isWatched });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error toggling series watched" });
+  }
+});
+
+mediaManagerRouter.get("/series/:id/progress", verifyJWT, async (req, res) => {
+  const userId = req.user.id;
+  const seriesId = req.params.id;
+
+  try {
+    const [rows] = await pool.promise().query(
+      `SELECT season_number, episode_number FROM watched_episodes WHERE user_id = ? AND series_id = ?`,
+      [userId, seriesId]
+    );
+    res.json({ watchedEpisodes: rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error fetching progress" });
+  }
+});
+
+
+
+
 
 export default mediaManagerRouter;
