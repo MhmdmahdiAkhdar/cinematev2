@@ -10,7 +10,6 @@
 </head>
 <body data-media-id="<%= series.id %>">
 
-  <!-- NAVIGATION -->
   <nav>
     <div class="logo">
       <ion-icon name="film-outline"></ion-icon>
@@ -27,7 +26,6 @@
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
   <section class="hero" style="background-image: url('<%= series.backdrop %>');">
     <div class="overlay"></div>
     <div class="hero-content">
@@ -43,7 +41,7 @@
   </section>
 
   <main>
-    <!-- OVERVIEW -->
+
     <section class="overview">
       <div class="poster">
         <img src="<%= series.poster %>" alt="<%= series.name %> Poster">
@@ -64,7 +62,6 @@
       </div>
     </section>
 
-    <!-- STAR RATING -->
     <div class="rating-container">
       <div class="stars" id="starRating">
         <% for(let i=1;i<=10;i++){ %>
@@ -75,7 +72,6 @@
       <button id="submitRating">Submit Rating</button>
     </div>
 
-    <!-- SEASONS -->
     <section class="seasons">
       <h2>Seasons</h2>
       <div class="season-grid">
@@ -99,7 +95,6 @@
         <% } %>
       </div>
 
-      <!-- SEASON PAGINATION -->
       <div class="pagination">
         <% for(let i=1; i<=series.totalSeasonPages; i++){ %>
           <a class="<%= i === series.currentSeasonPage ? 'active' : '' %>" 
@@ -107,7 +102,6 @@
         <% } %>
       </div>
 
-      <!-- EPISODES -->
       <h2>Episodes - Season <%= series.selectedSeason %></h2>
       <div class="episode-grid">
         <% if(series.paginatedEpisodes && series.paginatedEpisodes.length > 0){ %>
@@ -119,11 +113,11 @@
                 <% } else { %>
                   <div class="episode-placeholder">No Image</div>
                 <% } %>
-                    <button class="btn-watched-ep" 
+                    <!-- <button class="btn-watched-ep" 
                             data-season="<%= episode.season_number %>" 
                             data-episode="<%= episode.episode_number %>">
                       ✓ Watched
-                    </button>
+                    </button> -->
 
               </div>
               <div class="episode-info">
@@ -145,7 +139,6 @@
         <% } %>
       </div>
 
-      <!-- EPISODE PAGINATION -->
       <div class="pagination">
         <% for(let i = 1; i <= series.totalEpisodePages; i++) { %>
           <a class="<%= i === series.currentEpisodePage ? 'active' : '' %>" 
@@ -156,7 +149,6 @@
       </div>
     </section>
 
-    <!-- CAST -->
     <section class="cast">
       <h2>Cast</h2>
       <div class="cast-grid">
@@ -174,7 +166,7 @@
       </div>
     </section>
 
-    <!-- COMMENTS -->
+  
     <section class="comments">
       <h2>Comments</h2>
       <div class="comments-container"></div>
